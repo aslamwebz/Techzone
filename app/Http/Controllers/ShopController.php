@@ -31,7 +31,6 @@ class ShopController extends Controller
     public function shop()
     {
         $products = Product::with('category')
-                         ->filter(request(['search', 'category', 'sort']))
                          ->paginate(12)
                          ->withQueryString();
 
@@ -46,7 +45,6 @@ class ShopController extends Controller
     {
         $products = $category->products()
                           ->with('category')
-                          ->filter(request(['search', 'sort']))
                           ->paginate(12)
                           ->withQueryString();
 
@@ -66,6 +64,16 @@ class ShopController extends Controller
                                 ->get();
 
         return view('shop.product', compact('product', 'relatedProducts'));
+    }
+    
+    public function showCategory(Category $category)
+    {
+        $products = $category->products()
+                          ->with('category')
+                          ->paginate(12)
+                          ->withQueryString();
+
+        return view('shop.category', compact('category', 'products'));
     }
 }
 

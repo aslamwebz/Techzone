@@ -32,5 +32,27 @@
                 {{ $slot }}
             </main>
         </div>
+
+        @stack('modals')
+        
+        <!-- Include shop JavaScript -->
+        <script src="{{ asset('js/shop.js') }}" defer></script>
+        
+        <!-- Simple cart toggle functionality -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cart toggle functionality
+                document.addEventListener('click', function(e) {
+                    const cartToggle = e.target.closest('[data-cart-toggle]');
+                    if (cartToggle) {
+                        e.preventDefault();
+                        const dropdown = document.querySelector('.cart-dropdown');
+                        if (dropdown) {
+                            dropdown.classList.toggle('hidden');
+                        }
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

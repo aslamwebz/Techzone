@@ -4,39 +4,34 @@
 
 @push('styles')
 <style>
-    /* Hero Section */
-    .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        position: relative;
+    /* Custom styles can be added here */
+    .product-card {
+        transition: all 0.3s ease;
         overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        background: white;
     }
     
-    .hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, rgba(79, 70, 229, 0.8), rgba(124, 58, 237, 0.8));
-        z-index: 1;
-        opacity: 0.7;
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
     
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-        padding: 2rem;
-        animation: fadeInUp 1s ease-out;
+    .product-image {
+        height: 200px;
+        object-fit: contain;
+        background: #f8fafc;
+        padding: 1rem;
+    }
+    
+    .product-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 3.5rem;
     }
     
     /* Category Cards */
@@ -158,20 +153,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="hero relative">
-    <div class="hero-content">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Welcome to TechZone</h1>
-        <p class="text-xl text-white mb-8">Discover the latest tech gadgets and electronics at unbeatable prices.</p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="{{ route('shop') }}" class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-full font-semibold text-lg transition duration-300 transform hover:scale-105 inline-block text-center">
-                Shop Now
-            </a>
-            <a href="#featured" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 px-8 py-3 rounded-full font-semibold text-lg transition duration-300 transform hover:scale-105 inline-block text-center">
-                Featured Products
-            </a>
-        </div>
-    </div>
-</section>
+<x-hero-slideshow />
 
 <!-- Categories Section -->
 <section id="categories" class="py-16 bg-gray-50">
@@ -194,7 +176,7 @@
             @endphp
             
             @foreach($categories as $category)
-                <a href="{{ route('shop.category', $category['slug']) }}" class="category-card group">
+                <a href="{{ route('categories.show', $category['slug']) }}" class="category-card group" wire:navigate>
                     <div class="relative overflow-hidden rounded-lg h-64">
                         <img src="{{ $category['image'] }}" alt="{{ $category['name'] }}" class="w-full h-full object-cover">
                         <div class="category-overlay">
@@ -218,42 +200,114 @@
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($featuredProducts as $index => $product)
-                <div class="product-card group" style="animation: fadeInUp 0.5s ease-out {{ $index * 0.1 }}s both;">
-                    <div class="relative">
-                        @if($product->sale_price)
-                            <span class="product-badge">Sale</span>
-                        @elseif($product->is_new)
-                            <span class="product-badge" style="background: #3B82F6;">New</span>
-                        @endif
-                        <div class="product-image">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300?text=No+Image' }}" alt="{{ $product->name }}">
+            @forelse($featuredProducts as $product)
+                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <!-- Product Image -->
+                    <div class="product-image-container">
+                        <a href="{{ route('product.show', $product->slug) }}" class="block h-full w-full" wire:navigate>
+                            <img 
+                                src="{{ $product->image ? asset('storage/' . $product->image) : 'https://placehold.co/600x600/e5e7eb/9ca3af?text=No+Image' }}" 
+                                alt="{{ $product->name }}" 
+                                class="product-image"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x600/e5e7eb/9ca3af?text=Image+Not+Available'"
+                            >
+                        </a>
+                        
+                        <!-- Badges -->
+                        <div class="absolute top-3 left-3 flex flex-col space-y-2">
+                            @if($product->is_new)
+                                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md transform transition-transform group-hover:scale-110">
+                                    New Arrival
+                                </span>
+                            @endif
+                            @if($product->on_sale)
+                                <span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md transform transition-transform group-hover:scale-110">
+                                    {{ round((1 - $product->price / $product->compare_price) * 100) }}% OFF
+                                </span>
+                            @endif
                         </div>
-                        <div class="p-4">
-                            <div class="text-sm text-gray-500 mb-1">{{ $product->category->name ?? 'Uncategorized' }}</div>
-                            <h3 class="font-semibold text-lg mb-2">
-                                <a href="{{ route('product.show', $product->slug) }}" class="hover:text-indigo-600 transition">
-                                    {{ $product->name }}
-                                </a>
-                            </h3>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    @if($product->sale_price)
-                                        <span class="text-lg font-bold text-indigo-600">₦{{ number_format($product->sale_price, 2) }}</span>
-                                        <span class="text-sm text-gray-500 line-through ml-2">₦{{ number_format($product->price, 2) }}</span>
-                                    @else
-                                        <span class="text-lg font-bold text-indigo-600">₦{{ number_format($product->price, 2) }}</span>
-                                    @endif
-                                </div>
-                                <button class="add-to-cart bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition" 
-                                        data-product-id="{{ $product->id }}">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
+                        
+                        <!-- Quick Actions -->
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 space-x-3 p-4">
+                            <button class="quick-action-btn" data-tooltip="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="quick-action-btn" data-tooltip="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="inline-block" data-tooltip="Add to Cart">
+                                <livewire:add-to-cart :productId="$product->id" :showQuantity="false" />
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Product Info -->
+                    <div class="p-4 flex flex-col flex-grow">
+                        <!-- Category -->
+                        @if($product->category)
+                            <a href="{{ route('categories.show', $product->category->slug) }}" class="text-indigo-600 text-sm font-medium hover:text-indigo-800 transition-colors mb-1">
+                                {{ $product->category->name }}
+                            </a>
+                        @endif
+                        
+                        <!-- Title -->
+                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2" title="{{ $product->name }}">
+                            <a href="{{ route('product.show', $product->slug) }}" class="hover:text-indigo-600 transition-colors">
+                                {{ $product->name }}
+                            </a>
+                        </h3>
+                        
+                        <!-- Price -->
+                        <div class="mt-auto pt-2">
+                            @if($product->on_sale && $product->compare_price > $product->price)
+                                <div class="flex items-baseline">
+                                    <span class="text-lg font-bold text-red-600">${{ number_format($product->price, 2) }}</span>
+                                    <span class="ml-2 text-sm text-gray-500 line-through">${{ number_format($product->compare_price, 2) }}</span>
+                                </div>
+                            @else
+                                <span class="text-lg font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
+                            @endif
+                        </div>
+                        
+                        <!-- Rating -->
+                        <div class="mt-2 flex items-center">
+                            <div class="flex text-amber-400">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= floor($product->rating))
+                                        <i class="fas fa-star"></i>
+                                    @elseif($i == ceil($product->rating) && $product->rating - floor($product->rating) >= 0.5)
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span class="text-xs text-gray-500 ml-1">({{ $product->reviews_count }})</span>
+                        </div>
+                        
+                        <!-- Price & Add to Cart -->
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                @if($product->compare_price > $product->price)
+                                    <span class="text-gray-500 line-through text-sm mr-2">₦{{ number_format($product->compare_price, 2) }}</span>
+                                @endif
+                                <span class="text-lg font-bold text-gray-900">
+                                    ₦{{ number_format($product->price, 2) }}
+                                </span>
+                            </div>
+                            <livewire:add-to-cart :productId="$product->id" :showQuantity="false" />
+                        </div>
+                    </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-500 text-lg">No products found.</div>
+                    <a href="{{ route('shop') }}" class="inline-block mt-4 text-indigo-600 hover:text-indigo-800 font-medium">
+                        Clear filters
+                    </a>
+                </div>
+            @endforelse
         </div>
         
         <div class="text-center mt-12">
@@ -274,42 +328,130 @@
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($newArrivals as $index => $product)
-                <div class="product-card group" style="animation: fadeInUp 0.5s ease-out {{ $index * 0.1 + 0.2 }}s both;">
-                    <div class="relative">
-                        @if($product->sale_price)
-                            <span class="product-badge">Sale</span>
-                        @elseif($product->is_new)
-                            <span class="product-badge" style="background: #3B82F6;">New</span>
-                        @endif
-                        <div class="product-image">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300?text=No+Image' }}" alt="{{ $product->name }}">
+            @forelse($newArrivals as $product)
+                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <!-- Product Image -->
+                    <div class="product-image-container">
+                        <a href="{{ route('product.show', $product->slug) }}" class="block h-full w-full" wire:navigate>
+                            <img 
+                                src="{{ $product->image ? asset('storage/' . $product->image) : 'https://placehold.co/600x600/e5e7eb/9ca3af?text=No+Image' }}" 
+                                alt="{{ $product->name }}" 
+                                class="product-image"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x600/e5e7eb/9ca3af?text=Image+Not+Available'"
+                            >
+                        </a>
+                        
+                        <!-- Badges -->
+                        <div class="absolute top-3 left-3 flex flex-col space-y-2">
+                            @if($product->is_new)
+                                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md transform transition-transform group-hover:scale-110">
+                                    New Arrival
+                                </span>
+                            @endif
+                            @if($product->sale_price && $product->sale_price < $product->price)
+                                <span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md transform transition-transform group-hover:scale-110">
+                                    Sale
+                                </span>
+                            @endif
                         </div>
-                        <div class="p-4">
-                            <div class="text-sm text-gray-500 mb-1">{{ $product->category->name ?? 'Uncategorized' }}</div>
-                            <h3 class="font-semibold text-lg mb-2">
-                                <a href="{{ route('product.show', $product->slug) }}" class="hover:text-indigo-600 transition">
-                                    {{ $product->name }}
-                                </a>
-                            </h3>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    @if($product->sale_price)
-                                        <span class="text-lg font-bold text-indigo-600">₦{{ number_format($product->sale_price, 2) }}</span>
-                                        <span class="text-sm text-gray-500 line-through ml-2">₦{{ number_format($product->price, 2) }}</span>
-                                    @else
-                                        <span class="text-lg font-bold text-indigo-600">₦{{ number_format($product->price, 2) }}</span>
-                                    @endif
-                                </div>
-                                <button class="add-to-cart bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition" 
-                                        data-product-id="{{ $product->id }}">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
+
+                        <!-- Quick Actions -->
+                        <div class="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="quick-action-btn hover:bg-indigo-100" title="Add to Wishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="quick-action-btn hover:bg-indigo-100" title="Quick View">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button class="quick-action-btn hover:bg-indigo-100" title="Add to Compare">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="p-4 flex flex-col flex-grow">
+                        <!-- Category -->
+                        @if($product->category)
+                            <a href="{{ route('categories.show', $product->category->slug) }}" class="text-indigo-600 text-sm font-medium hover:text-indigo-800 transition-colors mb-1">
+                                {{ $product->category->name }}
+                            </a>
+                        @endif
+                        
+                        <!-- Title -->
+                        <h3 class="text-gray-900 font-semibold text-lg mb-2 line-clamp-2">
+                            <a href="{{ route('product.show', $product->slug) }}" class="hover:text-indigo-600 transition-colors">
+                                {{ $product->name }}
+                            </a>
+                        </h3>
+                        
+                        <!-- Price -->
+                        <div class="mt-auto">
+                            <div class="flex items-center">
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="text-lg font-bold text-gray-900">₦{{ number_format($product->sale_price, 2) }}</span>
+                                    <span class="ml-2 text-sm text-gray-500 line-through">₦{{ number_format($product->price, 2) }}</span>
+                                    @php
+                                        $discount = (($product->price - $product->sale_price) / $product->price) * 100;
+                                    @endphp
+                                    <span class="ml-2 text-xs font-semibold bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
+                                        -{{ round($discount) }}%
+                                    </span>
+                                @else
+                                    <span class="text-lg font-bold text-gray-900">₦{{ number_format($product->price, 2) }}</span>
+                                @endif
                             </div>
+                            
+                            <!-- Rating -->
+                            <div class="flex items-center mt-2">
+                                <div class="flex text-yellow-400">
+                                    @php $rating = $product->rating ?: 0; @endphp
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= floor($rating))
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        @elseif($i == ceil($rating) && $rating - floor($rating) >= 0.5)
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <defs>
+                                                    <linearGradient id="half-star-{{ $i }}" x1="0" x2="50%" y1="0" y2="0">
+                                                        <stop offset="50%" stop-color="#F59E0B"/>
+                                                        <stop offset="50%" stop-color="#E5E7EB"/>
+                                                    </linearGradient>
+                                                </defs>
+                                                <path fill="url(#half-star-{{ $i }})" d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        @else
+                                            <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <span class="text-xs text-gray-500 ml-1">({{ $product->reviews_count ?? 0 }})</span>
+                            </div>
+                            
+                            <!-- Add to Cart Button -->
+                            <button class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md transition-colors duration-300 flex items-center justify-center space-x-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Add to Cart</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-500 text-lg">No new arrivals found.</div>
+                </div>
+            @endforelse
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{{ route('shop') }}" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+                View All New Arrivals
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
 </section>
@@ -440,85 +582,181 @@
 
 @push('scripts')
 <script>
-    // Add to cart functionality
+    // Function to get CSRF token
+    function getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
+
+    // Function to make fetch requests with CSRF token
+    async function fetchWithCsrf(url, options = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+            ...options.headers
+        };
+
+        const response = await fetch(url, {
+            ...options,
+            headers
+        });
+
+        return response.json();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        const addToCartButtons = document.querySelectorAll('.add-to-cart');
-        
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function() {
+        // Initialize quantity controls
+        document.querySelectorAll('.quantity-controls').forEach(control => {
+            const input = control.querySelector('.quantity-input');
+            const decrementBtn = control.querySelector('.decrement');
+            const incrementBtn = control.querySelector('.increment');
+            
+            // Decrement quantity
+            if (decrementBtn) {
+                decrementBtn.addEventListener('click', () => {
+                    const currentValue = parseInt(input.value);
+                    if (currentValue > 1) {
+                        input.value = currentValue - 1;
+                    }
+                });
+            }
+            
+            // Increment quantity
+            if (incrementBtn) {
+                incrementBtn.addEventListener('click', () => {
+                    const currentValue = parseInt(input.value);
+                    if (currentValue < 99) {
+                        input.value = currentValue + 1;
+                    }
+                });
+            }
+        });
+
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart, [data-product-id]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
                 const productId = this.getAttribute('data-product-id');
+                const card = this.closest('.product-card');
+                let quantity = 1;
+                
+                // Get quantity from quantity input if available
+                if (card) {
+                    const quantityInput = card.querySelector('.quantity-input');
+                    if (quantityInput) {
+                        quantity = parseInt(quantityInput.value) || 1;
+                    }
+                }
                 
                 // Show loading state
                 const originalHTML = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 this.disabled = true;
                 
-                // Make AJAX request to add to cart
-                fetch(`/cart/add/${productId}`, {
+                // Use our fetchWithCsrf helper
+                fetchWithCsrf(`/cart/add/${productId}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
+                    body: JSON.stringify({ quantity: quantity })
                 })
-                .then(response => response.json())
                 .then(data => {
+                    // Update cart count
                     if (data.success) {
-                        // Update cart count in the UI
-                        const cartCountElements = document.querySelectorAll('.cart-count');
-                        cartCountElements.forEach(el => {
-                            el.textContent = data.cart_count;
-                            el.classList.remove('hidden');
-                            
-                            // Add animation
-                            el.classList.add('animate-ping');
-                            setTimeout(() => {
-                                el.classList.remove('animate-ping');
-                            }, 500);
-                        });
+                        // Show success message with product name if available
+                        const productName = card ? card.querySelector('.product-title')?.textContent?.trim() || 'Product' : 'Product';
+                        showNotification(`${quantity} × ${productName} added to cart!`, 'success');
                         
-                        // Show success message
-                        showNotification('Product added to cart!', 'success');
+                        // Update cart count in the header
+                        updateCartCount(data.cart_count);
+                        
+                        // Update cart dropdown if it exists
+                        if (window.updateCartDropdown) {
+                            window.updateCartDropdown(data.cart);
+                        }
+                        
+                        // Dispatch event for other components to listen to
+                        document.dispatchEvent(new CustomEvent('cart-updated', { detail: data }));
+                    } else {
+                        showNotification(data.message || 'Error adding product to cart', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showNotification('Failed to add product to cart', 'error');
+                    const message = error.message || 'An error occurred. Please try again.';
+                    showNotification(message, 'error');
                 })
                 .finally(() => {
                     // Restore button state
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
+                    if (this) {
+                        this.innerHTML = originalHTML;
+                        this.disabled = false;
+                    }
                 });
             });
         });
         
         // Notification function
         function showNotification(message, type = 'success') {
+            // Remove any existing notifications first
+            document.querySelectorAll('.notification-toast').forEach(el => el.remove());
+            
             const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium z-50 transform transition-all duration-300 ${
+            notification.className = `notification-toast fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium z-50 transform transition-all duration-300 ${
                 type === 'success' ? 'bg-green-500' : 'bg-red-500'
-            }`;
-            notification.textContent = message;
+            } opacity-0 -translate-y-2`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
             
             document.body.appendChild(notification);
             
             // Animate in
             setTimeout(() => {
-                notification.classList.add('translate-x-0', 'opacity-100');
+                notification.classList.remove('opacity-0', '-translate-y-2');
+                notification.classList.add('opacity-100', 'translate-y-0');
             }, 10);
             
             // Remove after 3 seconds
             setTimeout(() => {
-                notification.classList.remove('translate-x-0', 'opacity-100');
-                notification.classList.add('translate-x-full', 'opacity-0');
+                notification.classList.remove('opacity-100', 'translate-y-0');
+                notification.classList.add('opacity-0', 'translate-y-2');
                 
                 // Remove from DOM after animation
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
                 }, 300);
             }, 3000);
         }
+        
+        // Function to update cart count in the UI
+        function updateCartCount(count) {
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(el => {
+                el.textContent = count;
+                if (count > 0) {
+                    el.closest('.relative').classList.remove('hidden');
+                } else {
+                    el.closest('.relative').classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize cart count on page load
+        fetchWithCsrf('/cart/count', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(data => {
+            if (data.count > 0) {
+                updateCartCount(data.count);
+            }
+        })
+        .catch(error => console.error('Error fetching cart count:', error));
     });
 </script>
 @endpush

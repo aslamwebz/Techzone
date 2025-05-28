@@ -22,7 +22,46 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+    @livewireScripts
     @stack('styles')
+    
+    <!-- Smooth Scroll Behavior -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Better image rendering */
+        img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        
+        /* Product image container */
+        .product-image-container {
+            position: relative;
+            padding-top: 100%;
+            background-color: #f9fafb;
+            overflow: hidden;
+        }
+        
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            padding: 1rem;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+    </style>
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -143,226 +182,97 @@
                         </form>
                     </div>
 
+                    <!-- Cart Counter -->
+                    <livewire:cart-counter />
+
                     <!-- User Account -->
                     @auth
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center text-gray-700 hover:text-indigo-600 focus:outline-none">
-                                <span class="sr-only">User menu</span>
-                                <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                <span class="ml-2 hidden lg:inline-block text-sm">My Account</span>
-                                <i class="fas fa-chevron-down ml-1 text-xs hidden lg:inline-block" :class="{ 'transform rotate-180': open }"></i>
+                            <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                                <span class="hidden md:inline">{{ Auth::user()->name }}</span>
+                                <i class="fas fa-chevron-down ml-1 text-xs"></i>
                             </button>
                             
-                            <div 
-                                x-show="open" 
-                                @click.away="open = false"
-                                x-transition:enter="transition ease-out duration-100 transform"
-                                x-transition:enter-start="opacity-0 scale-95"
-                                x-transition:enter-end="opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75 transform"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
-                                class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
-                                role="menu"
-                                aria-orientation="vertical"
-                                aria-labelledby="user-menu"
-                            >
+                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                        <i class="fas fa-user-circle mr-2"></i> Profile
-                                    </a>
-                                    <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                        <i class="fas fa-shopping-bag mr-2"></i> My Orders
-                                    </a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                        <i class="fas fa-heart mr-2"></i> Wishlist
-                                    </a>
+                                    <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                            <i class="fas fa-sign-out-alt mr-2"></i> Sign out
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                            {{ __('Log Out') }}
                                         </button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="hidden md:flex items-center text-gray-700 hover:text-indigo-600">
-                            <i class="fas fa-user-circle text-xl"></i>
-                            <span class="ml-2 text-sm">Sign In</span>
+                        <a href="{{ route('login') }}" class="text-gray-900 hover:text-indigo-600 text-sm font-medium">
+                            Sign In
                         </a>
                     @endauth
-
-                    <!-- Wishlist -->
-                    <a href="#" class="relative text-gray-700 hover:text-indigo-600">
-                        <span class="sr-only">Wishlist</span>
-                        <i class="far fa-heart text-xl"></i>
-                        <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </a>
-
-                    <!-- Cart -->
-                    <a href="{{ route('cart.index') }}" class="relative text-gray-700 hover:text-indigo-600">
-                        <span class="sr-only">Cart</span>
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="cart-count absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center {{ cartCount() > 0 ? 'block' : 'hidden' }}">
-                            {{ cartCount() }}
-                        </span>
-                    </a>
                 </div>
-            </div>
 
-            <!-- Mobile Search -->
-            <div x-show="searchOpen" @click.away="searchOpen = false" class="md:hidden py-3 px-4 bg-gray-50 border-t border-gray-200">
-                <form action="{{ route('shop') }}" method="GET" class="relative">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        placeholder="Search products..." 
-                        class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none text-sm"
-                        value="{{ request('search') }}"
-                    >
-                    <button type="submit" class="absolute right-0 top-0 h-full px-4 text-gray-500 hover:text-indigo-600 focus:outline-none">
-                        <i class="fas fa-search"></i>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars text-xl"></i>
                     </button>
-                </form>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white border-t border-gray-200" id="mobile-menu">
+        <!-- Mobile menu -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white border-t border-gray-200">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600' }}">
+                <form action="{{ route('shop') }}" method="GET" class="px-2 py-3">
+                    <div class="relative">
+                        <input type="text" name="search" placeholder="Search products..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <button type="submit" class="absolute right-2 top-2 text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Home
                 </a>
-                <a href="{{ route('shop') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('shop*') ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600' }}">
+                <a href="{{ route('shop') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Shop
                 </a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
+                <a href="{{ route('shop') }}#categories" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Categories
                 </a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                    New Arrivals
-                </a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                    Deals
-                </a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     About Us
                 </a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Contact
                 </a>
                 @guest
-                    <div class="border-t border-gray-200 pt-4 mt-2">
-                        <a href="{{ route('login') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                            Sign In
+                    <div class="border-t border-gray-200 pt-4">
+                        <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+                            Sign in
                         </a>
-                        <a href="{{ route('register') }}" class="block px-3 py-2 rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50">
-                            Create Account
-                        </a>
+                        <div class="mt-3">
+                            <p class="text-center text-sm text-gray-600">
+                                New customer?
+                                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                    Start here.
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 @endguest
             </div>
         </div>
     </header>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Icons -->
-                <div class="flex items-center space-x-4">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-indigo-600">
-                            <i class="fas fa-user text-xl"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-indigo-600">
-                            <i class="fas fa-sign-in-alt text-xl"></i>
-                        </a>
-                    @endauth
-                    
-                    <a href="{{ route('cart.index') }}" class="text-gray-600 hover:text-indigo-600 relative">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        @if(cartCount() > 0)
-                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {{ cartCount() }}
-                            </span>
-                        @endif
-                    </a>
-                </div>
-            </div>
-
-            <!-- Mobile Search -->
-            <div class="md:hidden mb-4">
-                <form action="{{ route('shop') }}" method="GET" class="w-full">
-                    <div class="relative">
-                        <input type="text" name="search" placeholder="Search products..." 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Navigation -->
-        <nav class="bg-indigo-700">
-            <div class="container mx-auto px-4">
-                <div class="flex items-center justify-between h-12">
-                    <div class="hidden md:flex space-x-8">
-                        <a href="{{ route('home') }}" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('home') ? 'bg-indigo-800' : '' }}">
-                            Home
-                        </a>
-                        <a href="{{ route('shop') }}" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('shop*') ? 'bg-indigo-800' : '' }}">
-                            Shop
-                        </a>
-                        <a href="#categories" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                            Categories
-                        </a>
-                        <a href="#new-arrivals" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                            New Arrivals
-                        </a>
-                        <a href="#contact" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                            Contact
-                        </a>
-                    </div>
-                    <div class="md:hidden">
-                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white hover:bg-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-indigo-800">
-                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="{{ route('home') }}" class="text-white hover:bg-indigo-600 block px-3 py-2 rounded-md text-base font-medium">
-                        Home
-                    </a>
-                    <a href="{{ route('shop') }}" class="text-white hover:bg-indigo-600 block px-3 py-2 rounded-md text-base font-medium">
-                        Shop
-                    </a>
-                    <a href="#categories" class="text-white hover:bg-indigo-600 block px-3 py-2 rounded-md text-base font-medium">
-                        Categories
-                    </a>
-                    <a href="#new-arrivals" class="text-white hover:bg-indigo-600 block px-3 py-2 rounded-md text-base font-medium">
-                        New Arrivals
-                    </a>
-                    <a href="#contact" class="text-white hover:bg-indigo-600 block px-3 py-2 rounded-md text-base font-medium">
-                        Contact
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </header>
+    
+    <!-- Main Navigation will be handled by the page content -->
 
     <!-- Page Content -->
-    <main>
+    <main wire:navigate>
         @yield('content')
     </main>
 
@@ -455,7 +365,7 @@
                 updateCartFromSession() {
                     // This would be replaced with an actual fetch to get cart data
                     // For now, we'll just update the UI based on the cart count
-                    const cartCount = {{ cartCount() }};
+                    const cartCount = {{ Cart::count() }};
                     this.cartItems = Array(cartCount).fill({});
                     this.cartTotal = 0; // This would be calculated from actual cart data
                 },

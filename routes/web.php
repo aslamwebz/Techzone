@@ -16,13 +16,34 @@ Route::get('/', [ShopController::class, 'index'])->name('home');
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('/shop/category/{category:slug}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/product/{product:slug}', [ShopController::class, 'show'])->name('product.show');
+Route::get('/category/{category:slug}', [ShopController::class, 'showCategory'])->name('categories.show');
+
+// Test cart route
+Route::get('/test-cart', function() {
+    // Test if cart is working
+    try {
+        $cart = app('cart');
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart is working!',
+            'cart_count' => $cart->count()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Cart error: ' . $e->getMessage()
+        ], 500);
+    }
+});
 
 // Cart routes
 Route::prefix('cart')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::get('/count', [CartController::class, 'cartCount'])->name('count');
     Route::post('/add/{id}', [CartController::class, 'addToCart'])->name('add');
     Route::post('/update', [CartController::class, 'updateCart'])->name('update');
-    Route::post('/remove', [CartController::class, 'removeFromCart'])->name('remove');
+    Route::delete('/remove/{rowId}', [CartController::class, 'removeFromCart'])->name('remove');
+    Route::post('/clear', [CartController::class, 'clearCart'])->name('clear');
 });
 
 // Authenticated routes
@@ -40,7 +61,8 @@ Route::middleware(['auth'])->group(function () {
     // Regular User Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Checkout routes would go here
+    // Checkout routes
+    Route::get('/checkout', [\App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
     
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -49,3 +71,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Include test routes
+require __DIR__.'/test.php';
