@@ -13,7 +13,7 @@ Route::middleware('guest')->group(function () {
 
     // Login Routes
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [LoginController::class, 'login']);
+    Route::post('login', [LoginController::class, 'login'])->middleware('throttle:5,1');
 
     // Password Reset Routes
     Volt::route('forgot-password', 'pages.auth.forgot-password')

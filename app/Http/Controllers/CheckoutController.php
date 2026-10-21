@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Cart;
+use App\Http\Requests\CheckoutRequest;
+use App\Models\Order;
+use App\Models\Product;
+use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
     /**
      * Display the checkout page.
-     *
-     * @return View
      */
-    public function index()
+    public function index(): View|RedirectResponse
     {
         // Redirect to cart if empty
         if (Cart::count() === 0) {
@@ -24,13 +27,10 @@ class CheckoutController extends Controller
                 ->with('warning', 'Your cart is empty. Please add some products before checkout.');
         }
 
-        // Get cart items and totals
         $cartItems = Cart::content();
         $subtotal = Cart::subtotal();
         $tax = Cart::tax();
         $total = Cart::total();
-
-        // Get user details if logged in
         $user = Auth::user();
 
         return view('checkout.index', [
@@ -43,45 +43,80 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Process the checkout.
-     *
-     * @return RedirectResponse
-     */
-    /**
      * Process the checkout form submission.
-     *
-     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CheckoutRequest $request): RedirectResponse
     {
-        // Validate the request
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:500',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:100',
-            'payment_method' => 'required|string|in:cash_on_delivery',
-        ]);
+        if (Cart::count() === 0) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Your cart is empty.');
+        }
+
+        $validated = $request->validated();
+        $cartItems = Cart::content();
+        $subtotal = (float) str_replace(',', '', Cart::subtotal());
+        $tax = (float) str_replace(',', '', Cart::tax());
+        $total = (float) str_replace(',', '', Cart::total());
 
         try {
-            // Here you would typically:
-            // 1. Create an order record in the database
-            // 2. Process payment if needed
-            // 3. Send order confirmation email
-            // 4. Clear the cart
-            // 5. Redirect to success page
+            $order = DB::transaction(function () use ($validated, $cartItems, $subtotal, $tax, $total) {
+                // Verify and deduct stock with pessimistic locking
+                foreach ($cartItems as $item) {
+                    $product = Product::where('id', $item->id)->lockForUpdate()->first();
 
-            // For now, we'll just clear the cart and redirect to success
-            $orderId = 'ORD-'.strtoupper(uniqid());
+                    if (! $product || ! $product->is_active) {
+                        throw new Exception("Product '{$item->name}' is no longer available.");
+                    }
 
-            // Store order details in session for the success page
+                    if ($product->stock < $item->qty) {
+                        throw new Exception("Product '{$item->name}' is out of stock or has insufficient quantity (only {$product->stock} available).");
+                    }
+
+                    $product->decrement('stock', $item->qty);
+                }
+
+                // Create Order record
+                $order = Order::create([
+                    'order_number' => 'ORD-'.strtoupper(Str::random(8)),
+                    'user_id' => Auth::id(),
+                    'status' => 'pending',
+                    'subtotal' => $subtotal,
+                    'tax' => $tax,
+                    'total_amount' => $total,
+                    'payment_method' => $validated['payment_method'],
+                    'payment_status' => 'pending',
+                    'first_name' => $validated['first_name'],
+                    'last_name' => $validated['last_name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'],
+                    'city' => $validated['city'],
+                    'state' => $validated['state'],
+                    'postal_code' => $validated['postal_code'],
+                    'country' => $validated['country'],
+                    'notes' => $validated['notes'] ?? null,
+                ]);
+
+                // Create Order Items
+                foreach ($cartItems as $item) {
+                    $order->items()->create([
+                        'product_id' => $item->id,
+                        'product_name' => $item->name,
+                        'price' => (float) $item->price,
+                        'quantity' => (int) $item->qty,
+                        'total' => (float) $item->total,
+                    ]);
+                }
+
+                // Clear the cart
+                Cart::destroy();
+
+                return $order;
+            });
+
+            // Store order details in session
             session([
-                'order_id' => $orderId,
+                'order_id' => $order->order_number,
                 'shipping_address' => [
                     'name' => $validated['first_name'].' '.$validated['last_name'],
                     'email' => $validated['email'],
@@ -92,34 +127,27 @@ class CheckoutController extends Controller
                     'postal_code' => $validated['postal_code'],
                     'country' => $validated['country'],
                 ],
-                'payment_method' => 'Cash on Delivery',
+                'payment_method' => ucfirst(str_replace('_', ' ', $validated['payment_method'])),
             ]);
-
-            // Clear the cart
-            Cart::destroy();
 
             return redirect()->route('checkout.success')
                 ->with('success', 'Your order has been placed successfully!');
 
-        } catch (\Exception $e) {
-            // Log the error
-            \Log::error('Checkout error: '.$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Checkout error: '.$e->getMessage());
 
-            // Redirect back with error
             return redirect()->back()
-                ->with('error', 'There was an error processing your order. Please try again.')
+                ->with('error', $e->getMessage())
                 ->withInput();
         }
     }
 
     /**
      * Display the checkout success page.
-     *
-     * @return View
      */
-    public function success()
+    public function success(): View|RedirectResponse
     {
-        if (! session('success')) {
+        if (! session('success') && ! session('order_id')) {
             return redirect()->route('home');
         }
 

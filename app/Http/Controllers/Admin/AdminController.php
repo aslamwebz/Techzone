@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -225,6 +226,8 @@ class AdminController extends Controller
     // Orders Management
     public function orders(): View
     {
+        Gate::authorize('viewAny', Order::class);
+
         $orders = Order::with(['user', 'items.product'])
             ->latest()
             ->paginate(10);
@@ -234,6 +237,8 @@ class AdminController extends Controller
 
     public function showOrder(Order $order): View
     {
+        Gate::authorize('view', $order);
+
         $order->load(['user', 'items.product']);
 
         return view('admin.orders.show', compact('order'));
@@ -241,6 +246,8 @@ class AdminController extends Controller
 
     public function updateOrderStatus(Request $request, Order $order): RedirectResponse
     {
+        Gate::authorize('update', $order);
+
         $validated = $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
         ]);

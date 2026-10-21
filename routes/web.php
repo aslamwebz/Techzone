@@ -34,27 +34,8 @@ Route::get('/category/{category:slug}', function ($category) {
     return redirect()->route('shop.category', ['category' => $category]);
 })->name('categories.show');
 
-// Test cart route
-Route::get('/test-cart', function () {
-    // Test if cart is working
-    try {
-        $cart = app('cart');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Cart is working!',
-            'cart_count' => $cart->count(),
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Cart error: '.$e->getMessage(),
-        ], 500);
-    }
-});
-
 // Cart routes
-Route::prefix('cart')->name('cart.')->group(function () {
+Route::prefix('cart')->name('cart.')->middleware('throttle:60,1')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
     Route::get('/count', [CartController::class, 'cartCount'])->name('count');
     Route::post('/add/{id}', [CartController::class, 'addToCart'])->name('add');
@@ -106,6 +87,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Checkout routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('throttle:10,1');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

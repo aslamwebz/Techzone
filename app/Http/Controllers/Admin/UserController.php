@@ -3,25 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreUserRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     /**
      * Available roles for users
      */
-    protected $availableRoles = ['admin', 'manager', 'user'];
-
-    public function __construct() {}
+    protected array $availableRoles = ['admin', 'manager', 'user'];
 
     /**
      * Display a listing of the users.
      */
     public function index()
     {
+        Gate::authorize('viewAny', User::class);
+
         $users = User::latest()->paginate(10);
 
         return view('admin.users.index', compact('users'));
@@ -32,6 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', User::class);
+
         return view('admin.users.create', [
             'availableRoles' => $this->availableRoles,
         ]);
@@ -40,22 +43,19 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'username' => 'required|string|max:50|unique:users',
-            'role' => 'required|string|in:'.implode(',', $this->availableRoles),
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        Gate::authorize('create', User::class);
 
-        $user = User::create([
+        $validated = $request->validated();
+
+        User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
+            'is_admin' => $validated['role'] === 'admin',
             'status' => 'active',
         ]);
 
@@ -68,6 +68,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        Gate::authorize('view', $user);
+
         return view('admin.users.show', compact('user'));
     }
 
@@ -76,6 +78,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        Gate::authorize('update', $user);
+
         return view('admin.users.edit', [
             'user' => $user,
             'availableRoles' => $this->availableRoles,
@@ -85,33 +89,18 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
-            'username' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('users')->ignore($user->id),
-            ],
-            'role' => 'required|string|in:'.implode(',', $this->availableRoles),
-            'password' => 'nullable|string|min:8|confirmed',
-            'status' => 'required|in:active,inactive',
-        ]);
+        Gate::authorize('update', $user);
+
+        $validated = $request->validated();
 
         $userData = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'username' => $validated['username'],
             'role' => $validated['role'],
+            'is_admin' => $validated['role'] === 'admin',
             'status' => $validated['status'],
         ];
 
@@ -130,6 +119,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Gate::authorize('delete', $user);
+
         // Prevent deleting yourself
         if (auth()->id() === $user->id) {
             return back()->with('error', 'You cannot delete your own account.');

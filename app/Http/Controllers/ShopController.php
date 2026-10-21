@@ -78,7 +78,8 @@ class ShopController extends Controller
             ->firstOrFail();
 
         // Get related products (products from the same category)
-        $relatedProducts = Product::where('category_id', $product->category_id)
+        $relatedProducts = Product::with('category')
+            ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
             ->inRandomOrder()
@@ -111,7 +112,8 @@ class ShopController extends Controller
      */
     public function newArrivals()
     {
-        $products = Product::where('is_active', true)
+        $products = Product::with('category')
+            ->where('is_active', true)
             ->where('created_at', '>=', now()->subDays(30))
             ->latest('created_at')
             ->paginate(12);
@@ -124,9 +126,11 @@ class ShopController extends Controller
      */
     public function deals()
     {
-        $products = Product::where('is_active', true)
-            ->where('compare_at_price', '>', 0)
-            ->whereColumn('price', '<', 'compare_at_price')
+        $products = Product::with('category')
+            ->where('is_active', true)
+            ->whereNotNull('sale_price')
+            ->where('sale_price', '>', 0)
+            ->whereColumn('sale_price', '<', 'price')
             ->latest()
             ->paginate(12);
 
