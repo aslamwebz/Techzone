@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form action="{{ route('categories.update', $category->id) }}" method="POST">
+                    <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         
@@ -34,7 +34,7 @@
 
                         <div class="flex items-center justify-between mt-6">
                             <div>
-                                <a href="{{ route('categories.index') }}" class="mr-4 text-sm text-gray-600 hover:text-gray-900">
+                                <a href="{{ route('admin.categories.index') }}" class="mr-4 text-sm text-gray-600 hover:text-gray-900">
                                     Back to Categories
                                 </a>
                             </div>

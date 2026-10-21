@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: image/jpeg');
 $width = 600;
 $height = 400;
@@ -14,4 +15,3 @@ $text_y = ($height - imagefontheight($font_size)) / 2;
 imagestring($image, $font_size, $text_x, $text_y, $text, $text_color);
 imagejpeg($image);
 imagedestroy($image);
-?>
