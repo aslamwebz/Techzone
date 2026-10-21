@@ -46,14 +46,14 @@
         <div class="card mb-4">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <div class="avatar avatar-lg">
                             <span class="avatar-title rounded-circle bg-primary text-white">
                                 {{ substr($selectedUser->name, 0, 1) }}
                             </span>
                         </div>
                     </div>
-                    <div class="flex-grow-1 ms-3">
+                    <div class="grow ms-3">
                         <h5 class="mb-1">{{ $selectedUser->name }}</h5>
                         <p class="text-muted mb-1">{{ $selectedUser->email }}</p>
                         <div class="small text-muted">
@@ -67,7 +67,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <span class="badge bg-primary">{{ $selectedUser->activity_logs_count }} activities</span>
                     </div>
                 </div>

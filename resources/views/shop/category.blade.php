@@ -19,8 +19,8 @@
                 </p>
             </div>
             
-            <div class="flex-shrink-0">
-                <select id="sort" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <div class="shrink-0">
+                <select id="sort" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-hidden focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                     <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
                     <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
                     <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
@@ -33,7 +33,7 @@
         @if($products->count() > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                    <div class="product-card group flex flex-col h-full bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                    <div class="product-card group flex flex-col h-full bg-white rounded-lg shadow-xs hover:shadow-md transition-shadow duration-300 overflow-hidden">
                         <!-- Product Image -->
                         <div class="relative pt-[100%] bg-gray-50 overflow-hidden">
                             <a href="{{ route('product.show', $product->slug) }}" class="absolute inset-0 flex items-center justify-center p-4">
@@ -58,19 +58,19 @@
                             <!-- Badges -->
                             <div class="absolute top-0 left-0 right-0 flex justify-between p-2">
                                 @if($product->is_featured)
-                                    <span class="bg-yellow-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded">Featured</span>
+                                    <span class="bg-yellow-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded-sm">Featured</span>
                                 @else
                                     <span class="invisible">Placeholder</span>
                                 @endif
                                 
                                 @if($product->created_at->diffInDays(now()) <= 7)
-                                    <span class="bg-green-500 text-white text-xs font-semibold px-2 py-0.5 rounded">New</span>
+                                    <span class="bg-green-500 text-white text-xs font-semibold px-2 py-0.5 rounded-sm">New</span>
                                 @endif
                             </div>
                         </div>
                         
                         <!-- Product Info -->
-                        <div class="p-4 flex flex-col flex-grow">
+                        <div class="p-4 flex flex-col grow">
                             <!-- Category -->
                             <div class="mb-1 min-h-[20px]">
                                 <a href="{{ route('categories.show', $category->slug) }}" wire:navigate class="text-indigo-600 text-sm font-medium hover:text-indigo-800 transition-colors">
@@ -79,7 +79,7 @@
                             </div>
                             
                             <!-- Product Name -->
-                            <h3 class="text-gray-900 font-semibold text-lg mb-3 line-clamp-2 h-[3rem]">
+                            <h3 class="text-gray-900 font-semibold text-lg mb-3 line-clamp-2 h-12">
                                 <a href="{{ route('product.show', $product->slug) }}" wire:navigate class="hover:text-indigo-600 transition-colors">
                                     {{ $product->name }}
                                 </a>
@@ -99,7 +99,7 @@
                                         @endif
                                     </div>
                                     
-                                    <button class="add-to-cart bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition flex-shrink-0" 
+                                    <button class="add-to-cart bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition shrink-0" 
                                             data-product-id="{{ $product->id }}"
                                             aria-label="Add to cart">
                                         <i class="fas fa-shopping-cart"></i>

@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-sm sticky top-0 z-50">
+<nav class="bg-white shadow-xs sticky top-0 z-50">
     <!-- Top Bar -->
     <div class="border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,7 +14,7 @@
                     <input type="checkbox" id="mobile-menu-toggle" class="hidden peer" />
                     
                     <!-- Logo -->
-                    <div class="flex-shrink-0 flex items-center ml-2 md:ml-0">
+                    <div class="shrink-0 flex items-center ml-2 md:ml-0">
                         <a href="{{ route('home') }}" class="flex items-center">
                             <x-application-logo class="block h-8 w-auto fill-current text-indigo-600" />
                             <span class="ml-2 text-xl font-bold text-gray-900 hidden sm:block">{{ config('app.name') }}</span>
@@ -66,7 +66,7 @@
                                 placeholder="Search products..." 
                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             >
-                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
@@ -84,7 +84,7 @@
                                 placeholder="Search products..." 
                                 class="w-64 px-4 py-2 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             >
-                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
@@ -111,7 +111,7 @@
                         <input type="checkbox" id="cart-toggle" class="hidden peer/cart" />
 
                         <!-- Cart Dropdown -->
-                        <div class="hidden peer-checked/cart:block origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                        <div class="hidden peer-checked/cart:block origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-hidden z-50">
                             @livewire('cart.dropdown')
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                         <input type="checkbox" id="user-menu-toggle" class="hidden peer/user-menu" />
 
                         <!-- Dropdown menu -->
-                        <div class="hidden peer-checked/user-menu:block origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                        <div class="hidden peer-checked/user-menu:block origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-hidden z-50">
                             @auth
                                 <div class="py-1">
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
@@ -179,7 +179,7 @@
                 <div 
                     x-show="query.length > 2 && searchResults.length > 0" 
                     @click.away="query = ''"
-                    class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-hidden sm:text-sm"
                     style="display: none;"
                 >
                     <div class="max-h-96 overflow-y-auto">
@@ -227,7 +227,7 @@
         @auth
             <div class="pt-4 pb-3 border-t border-gray-200">
                 <div class="flex items-center px-4">
-                    <div class="flex-shrink-0">
+                    <div class="shrink-0">
                         <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}">
                     </div>
                     <div class="ml-3">

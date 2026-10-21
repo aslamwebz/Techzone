@@ -126,7 +126,7 @@
                     @if(!empty($log->properties['input']))
                         <div class="log-property">
                             <label>Input Data</label>
-                            <pre class="p-2 bg-light rounded"><code>{{ json_encode($log->properties['input'], JSON_PRETTY_PRINT) }}</code></pre>
+                            <pre class="p-2 bg-light rounded-sm"><code>{{ json_encode($log->properties['input'], JSON_PRETTY_PRINT) }}</code></pre>
                         </div>
                     @endif
                     
@@ -136,7 +136,7 @@
                                 <div class="col-md-6">
                                     <div class="log-property">
                                         <label>Old Values</label>
-                                        <pre class="p-2 bg-light rounded"><code>{{ json_encode($log->properties['old'], JSON_PRETTY_PRINT) }}</code></pre>
+                                        <pre class="p-2 bg-light rounded-sm"><code>{{ json_encode($log->properties['old'], JSON_PRETTY_PRINT) }}</code></pre>
                                     </div>
                                 </div>
                             @endif
@@ -145,13 +145,13 @@
                                 <div class="col-md-6">
                                     <div class="log-property">
                                         <label>New Values</label>
-                                        <pre class="p-2 bg-light rounded"><code>{{ json_encode($log->properties['attributes'], JSON_PRETTY_PRINT) }}</code></pre>
+                                        <pre class="p-2 bg-light rounded-sm"><code>{{ json_encode($log->properties['attributes'], JSON_PRETTY_PRINT) }}</code></pre>
                                     </div>
                                 </div>
                             @endif
                         </div>
                     @elseif(count($log->properties) > 0)
-                        <pre class="p-2 bg-light rounded"><code>{{ json_encode($log->properties, JSON_PRETTY_PRINT) }}</code></pre>
+                        <pre class="p-2 bg-light rounded-sm"><code>{{ json_encode($log->properties, JSON_PRETTY_PRINT) }}</code></pre>
                     @else
                         <div class="text-muted">No additional data available</div>
                     @endif

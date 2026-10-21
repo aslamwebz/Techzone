@@ -201,7 +201,7 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @forelse($featuredProducts as $product)
-                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-xs hover:shadow-md transition-shadow duration-300">
                     <!-- Product Image -->
                     <div class="product-image-container">
                         <a href="{{ route('product.show', $product->slug) }}" class="block h-full w-full" wire:navigate>
@@ -243,7 +243,7 @@
                     </div>
                     
                     <!-- Product Info -->
-                    <div class="p-4 flex flex-col flex-grow">
+                    <div class="p-4 flex flex-col grow">
                         <!-- Category -->
                         @if($product->category)
                             <a href="{{ route('categories.show', $product->category->slug) }}" class="text-indigo-600 text-sm font-medium hover:text-indigo-800 transition-colors mb-1">
@@ -329,7 +329,7 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @forelse($newArrivals as $product)
-                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="product-card group flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-xs hover:shadow-md transition-shadow duration-300">
                     <!-- Product Image -->
                     <div class="product-image-container">
                         <a href="{{ route('product.show', $product->slug) }}" class="block h-full w-full" wire:navigate>
@@ -371,7 +371,7 @@
                     </div>
 
                     <!-- Product Info -->
-                    <div class="p-4 flex flex-col flex-grow">
+                    <div class="p-4 flex flex-col grow">
                         <!-- Category -->
                         @if($product->category)
                             <a href="{{ route('categories.show', $product->category->slug) }}" class="text-indigo-600 text-sm font-medium hover:text-indigo-800 transition-colors mb-1">
@@ -491,7 +491,7 @@
         <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
         <p class="text-indigo-100 max-w-2xl mx-auto mb-8">Get the latest updates on new products and upcoming sales</p>
         <form class="max-w-md mx-auto flex">
-            <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900">
+            <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-l-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500 text-gray-900">
             <button type="submit" class="bg-indigo-800 hover:bg-indigo-900 px-6 rounded-r-lg font-semibold transition">
                 Subscribe
             </button>

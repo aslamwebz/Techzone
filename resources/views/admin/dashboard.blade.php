@@ -8,7 +8,7 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <!-- Total Products -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -25,7 +25,7 @@
             </div>
 
             <!-- Total Categories -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-green-100 text-green-600">
@@ -42,7 +42,7 @@
             </div>
 
             <!-- Total Users -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
@@ -59,7 +59,7 @@
             </div>
 
             <!-- Total Orders -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-purple-100 text-purple-600">
@@ -77,7 +77,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+        <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg mb-8">
             <div class="p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -130,7 +130,7 @@
         </div>
 
         <!-- Recent Products -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+        <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg mb-8">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-medium text-gray-900">Recent Products</h3>
@@ -155,7 +155,7 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
+                                            <div class="shrink-0 h-10 w-10">
                                                 <img class="h-10 w-10 rounded-full object-cover" src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/placeholder-product.png') }}" alt="{{ $product->name }}">
                                             </div>
                                             <div class="ml-4">

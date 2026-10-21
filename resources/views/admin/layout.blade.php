@@ -106,7 +106,7 @@
         <!-- Content -->
         <div class="flex flex-col h-screen" :class="{ 'md:ml-64': sidebarOpen }">
             <!-- Top Navigation -->
-            <header class="bg-white shadow-sm z-10">
+            <header class="bg-white shadow-xs z-10">
                 <div class="flex items-center justify-between px-4 py-3">
                     <div class="flex items-center">
                         <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-500 rounded-md hover:bg-gray-100">
@@ -175,7 +175,7 @@
                 @if (session('success'))
                     <div class="p-4 mb-4 text-green-700 bg-green-100 border-l-4 border-green-500">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <x-icons.check-circle class="w-5 h-5 text-green-500" />
                             </div>
                             <div class="ml-3">
@@ -188,7 +188,7 @@
                 @if (session('error'))
                     <div class="p-4 mb-4 text-red-700 bg-red-100 border-l-4 border-red-500">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <x-icons.x-circle class="w-5 h-5 text-red-500" />
                             </div>
                             <div class="ml-3">

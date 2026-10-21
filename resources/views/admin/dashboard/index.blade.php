@@ -5,7 +5,7 @@
 @section('content')
 <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-4">
     <!-- Users Card -->
-    <div class="p-6 bg-white rounded-lg shadow">
+    <div class="p-6 bg-white rounded-lg shadow-sm">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-blue-100 text-blue-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Products Card -->
-    <div class="p-6 bg-white rounded-lg shadow">
+    <div class="p-6 bg-white rounded-lg shadow-sm">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-green-100 text-green-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Categories Card -->
-    <div class="p-6 bg-white rounded-lg shadow">
+    <div class="p-6 bg-white rounded-lg shadow-sm">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-purple-100 text-purple-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Orders Card -->
-    <div class="p-6 bg-white rounded-lg shadow">
+    <div class="p-6 bg-white rounded-lg shadow-sm">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,7 +81,7 @@
 <div class="mt-8">
     <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Activities</h3>
     
-    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <div class="bg-white shadow-sm overflow-hidden sm:rounded-md">
         <ul class="divide-y divide-gray-200">
             @forelse($activities as $activity)
                 <li>
@@ -90,7 +90,7 @@
                             <p class="text-sm font-medium text-indigo-600 truncate">
                                 {{ $activity->description }}
                             </p>
-                            <div class="ml-2 flex-shrink-0 flex">
+                            <div class="ml-2 shrink-0 flex">
                                 <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                     {{ $activity->created_at->diffForHumans() }}
                                 </p>
@@ -99,14 +99,14 @@
                         <div class="mt-2 sm:flex sm:justify-between">
                             <div class="sm:flex">
                                 <p class="flex items-center text-sm text-gray-500">
-                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg class="shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                                     </svg>
                                     {{ $activity->causer->name ?? 'System' }}
                                 </p>
                             </div>
                             <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <svg class="shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
                                 </svg>
                                 <p>

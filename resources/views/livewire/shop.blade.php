@@ -31,8 +31,8 @@
 
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Sidebar -->
-            <aside class="w-full lg:w-72 flex-shrink-0">
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <aside class="w-full lg:w-72 shrink-0">
+                <div class="bg-white rounded-lg shadow-xs p-6 mb-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Filters</h3>
                         @if($search || $minPrice > 0 || $maxPrice < 10000 || count($categories) > 0 || count($ratings) > 0)
@@ -55,7 +55,7 @@
                                 type="text" 
                                 id="search" 
                                 wire:model.live.debounce.300ms="search"
-                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-hidden focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                 placeholder="Search products..."
                             >
                         </div>
@@ -68,7 +68,7 @@
                             <div class="flex items-center justify-between space-x-4">
                                 <div class="flex-1">
                                     <label for="minPrice" class="sr-only">Min price</label>
-                                    <div class="relative rounded-md shadow-sm">
+                                    <div class="relative rounded-md shadow-xs">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <span class="text-gray-500 sm:text-sm">$</span>
                                         </div>
@@ -81,10 +81,10 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="flex-shrink-0 text-gray-500">to</div>
+                                <div class="shrink-0 text-gray-500">to</div>
                                 <div class="flex-1">
                                     <label for="maxPrice" class="sr-only">Max price</label>
-                                    <div class="relative rounded-md shadow-sm">
+                                    <div class="relative rounded-md shadow-xs">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <span class="text-gray-500 sm:text-sm">$</span>
                                         </div>
@@ -112,7 +112,7 @@
                                         type="checkbox" 
                                         value="{{ $category->id }}"
                                         wire:model.live="categories"
-                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded-sm"
                                     >
                                     <label for="category-{{ $category->id }}" class="ml-2 text-sm text-gray-700">
                                         {{ $category->name }} ({{ $category->products_count }})
@@ -133,7 +133,7 @@
                                         type="checkbox" 
                                         value="{{ $i }}"
                                         wire:model.live="ratings"
-                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded-sm"
                                     >
                                     <label for="rating-{{ $i }}" class="ml-2 text-sm text-gray-700 flex items-center">
                                         @for($j = 1; $j <= 5; $j++)
@@ -159,7 +159,7 @@
             <!-- Main Content -->
             <div class="flex-1">
                 <!-- Sorting and View Options -->
-                <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="bg-white rounded-lg shadow-xs p-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="text-sm text-gray-600">
                         Showing <span class="font-medium">{{ $products->firstItem() }}</span> to 
                         <span class="font-medium">{{ $products->lastItem() }}</span> of 
@@ -171,7 +171,7 @@
                         <select 
                             id="sort" 
                             wire:model.live="sortBy"
-                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-hidden focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                         >
                             <option value="latest">Latest</option>
                             <option value="price_asc">Price: Low to High</option>
@@ -186,7 +186,7 @@
                 @if($products->count() > 0)
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         @foreach($products as $product)
-                            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <div class="bg-white rounded-lg overflow-hidden shadow-xs hover:shadow-md transition-shadow duration-300">
                                 <!-- Product Image -->
                                 <div class="relative h-48 bg-gray-100">
                                     @if($product->image)
@@ -242,7 +242,7 @@
                                         <span class="text-lg font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
                                         <button 
                                             wire:click="$dispatch('add-to-cart', { id: {{ $product->id }} })" 
-                                            class="bg-indigo-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                            class="bg-indigo-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         >
                                             Add to Cart
                                         </button>
@@ -257,7 +257,7 @@
                         {{ $products->links() }}
                     </div>
                 @else
-                    <div class="bg-white rounded-lg shadow-sm p-12 text-center">
+                    <div class="bg-white rounded-lg shadow-xs p-12 text-center">
                         <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg class="h-12 w-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -267,7 +267,7 @@
                         <p class="text-gray-500 mb-6">We couldn't find any products matching your criteria.</p>
                         <button 
                             wire:click="clearFilters" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-xs text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Clear all filters
                         </button>

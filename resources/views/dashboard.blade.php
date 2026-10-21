@@ -51,7 +51,7 @@
             </h2>
             @auth
                 @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Admin Dashboard
                     </a>
                 @endif
@@ -64,7 +64,7 @@
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Total Products -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
+                <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
                     <div class="p-6 relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-indigo-50 rounded-full opacity-20"></div>
                         <div class="flex items-center">
@@ -84,7 +84,7 @@
 
 
                 <!-- Total Categories -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
+                <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
                     <div class="p-6 relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-green-50 rounded-full opacity-20"></div>
                         <div class="flex items-center">
@@ -103,7 +103,7 @@
                 </div>
 
                 <!-- Total Users -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
+                <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
                     <div class="p-6 relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-yellow-50 rounded-full opacity-20"></div>
                         <div class="flex items-center">
@@ -122,7 +122,7 @@
                 </div>
 
                 <!-- Total Orders -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
+                <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg card-hover transform transition-all duration-300 hover:shadow-lg">
                     <div class="p-6 relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-red-50 rounded-full opacity-20"></div>
                         <div class="flex items-center">
@@ -142,7 +142,7 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8 transform transition-all duration-300 hover:shadow-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg mb-8 transform transition-all duration-300 hover:shadow-lg">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <div>
@@ -204,14 +204,14 @@
             </div>
 
             <!-- Recent Products -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8 transform transition-all duration-300 hover:shadow-lg">
+            <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg mb-8 transform transition-all duration-300 hover:shadow-lg">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h3 class="text-xl font-bold text-gray-900">Recent Products</h3>
                             <p class="text-sm text-gray-500">Latest products added to your store</p>
                         </div>
-                        <a href="{{ route('admin.products.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:-translate-y-0.5">
+                        <a href="{{ route('admin.products.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:-translate-y-0.5">
                             View All Products
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -236,11 +236,11 @@
                                     <tr class="hover:bg-gray-50 transition-colors duration-150" style="animation: fadeInUp 0.5s ease-out {{ $index * 0.1 }}s both;">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10 rounded-lg overflow-hidden bg-gray-100">
+                                                <div class="shrink-0 h-10 w-10 rounded-lg overflow-hidden bg-gray-100">
                                                     @if($product->image)
                                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover">
                                                     @else
-                                                        <div class="h-full w-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
+                                                        <div class="h-full w-full flex items-center justify-center bg-linear-to-br from-indigo-100 to-purple-100">
                                                             <svg class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                             </svg>
@@ -319,7 +319,7 @@
                                                 <h3 class="mt-2 text-sm font-medium text-gray-900">No products</h3>
                                                 <p class="mt-1 text-sm text-gray-500">Get started by creating a new product.</p>
                                                 <div class="mt-6">
-                                                    <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-xs text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                                                         </svg>

@@ -106,7 +106,7 @@
             <!-- Navigation Arrows -->
             <button 
                 @click="prev()"
-                class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full focus:outline-none transition-all duration-300 z-10"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full focus:outline-hidden transition-all duration-300 z-10"
                 aria-label="Previous slide"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -115,7 +115,7 @@
             </button>
             <button 
                 @click="next()"
-                class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full focus:outline-none transition-all duration-300 z-10"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full focus:outline-hidden transition-all duration-300 z-10"
                 aria-label="Next slide"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -128,7 +128,7 @@
                 <template x-for="(slide, index) in slides" :key="index">
                     <button 
                         @click="goToSlide(index)"
-                        class="w-3 h-3 rounded-full transition-all duration-300 focus:outline-none"
+                        class="w-3 h-3 rounded-full transition-all duration-300 focus:outline-hidden"
                         :class="activeSlide === index ? 'bg-white w-8' : 'bg-white/50 w-3'"
                         :aria-label="`Go to slide ${index + 1}`"
                     ></button>

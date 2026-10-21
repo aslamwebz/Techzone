@@ -41,7 +41,7 @@
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Checkout Form -->
             <div class="lg:w-2/3">
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <div class="bg-white rounded-lg shadow-xs p-6 mb-8">
                     <h2 class="text-xl font-bold text-gray-900 mb-6">Billing Details</h2>
                     
                     <form id="checkout-form" action="{{ route('checkout.store') }}" method="POST">
@@ -128,7 +128,7 @@
                         </div>
                         
                         <div class="mt-8 pt-6 border-t border-gray-200">
-                            <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-md hover:shadow-lg hover:shadow-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                            <button type="submit" class="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-md hover:shadow-lg hover:shadow-indigo-100 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                 Place Order
                             </button>
                         </div>
@@ -138,14 +138,14 @@
             
             <!-- Order Summary -->
             <div class="lg:w-1/3">
-                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-6">
+                <div class="bg-white rounded-lg shadow-xs p-6 sticky top-6">
                     <h2 class="text-xl font-bold text-gray-900 mb-6">Your Order</h2>
                     
                     <div class="space-y-4 mb-6">
                         @foreach($cartItems as $item)
                             <div class="flex justify-between">
                                 <div class="flex items-center">
-                                    <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <div class="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                         <img src="{{ $item->options->image ?? 'https://via.placeholder.com/150' }}" alt="{{ $item->name }}" class="h-full w-full object-cover">
                                     </div>
                                     <div class="ml-4">

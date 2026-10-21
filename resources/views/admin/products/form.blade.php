@@ -4,7 +4,7 @@
     @csrf
     @method($method)
     
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+    <div class="bg-white shadow-sm px-4 py-5 sm:rounded-lg sm:p-6">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Product Information</h3>
@@ -17,7 +17,7 @@
                     <div class="col-span-6 sm:col-span-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $product->name ?? '') }}" 
-                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md">
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -26,7 +26,7 @@
                     <div class="col-span-6 sm:col-span-4">
                         <label for="sku" class="block text-sm font-medium text-gray-700">SKU</label>
                         <input type="text" name="sku" id="sku" value="{{ old('sku', $product->sku ?? '') }}" 
-                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md">
                         @error('sku')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -34,7 +34,7 @@
                     
                     <div class="col-span-6 sm:col-span-4">
                         <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
-                        <select id="category_id" name="category_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <select id="category_id" name="category_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-hidden focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             <option value="">Select a category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ (old('category_id', $product->category_id ?? '') == $category->id) ? 'selected' : '' }}>
@@ -49,7 +49,7 @@
                     
                     <div class="col-span-6 sm:col-span-4">
                         <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="mt-1 relative rounded-md shadow-xs">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">$</span>
                             </div>
@@ -64,7 +64,7 @@
                     <div class="col-span-6 sm:col-span-2">
                         <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
                         <input type="number" name="stock" id="stock" min="0" value="{{ old('stock', $product->stock ?? '0') }}" 
-                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-xs sm:text-sm border-gray-300 rounded-md">
                         @error('stock')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -74,7 +74,7 @@
         </div>
     </div>
     
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+    <div class="bg-white shadow-sm px-4 py-5 sm:rounded-lg sm:p-6">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Description</h3>
@@ -90,7 +90,7 @@
                         </label>
                         <div class="mt-1">
                             <textarea id="description" name="description" rows="5" 
-                                      class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md">{{ old('description', $product->description ?? '') }}</textarea>
+                                      class="shadow-xs focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
                         <p class="mt-2 text-sm text-gray-500">
                             Brief description for your product.
@@ -104,7 +104,7 @@
         </div>
     </div>
     
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+    <div class="bg-white shadow-sm px-4 py-5 sm:rounded-lg sm:p-6">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Product Images</h3>
@@ -128,7 +128,7 @@
                                     </svg>
                                 @endif
                             </span>
-                            <label for="image" class="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            <label for="image" class="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 shadow-xs text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                                 <span>Change</span>
                                 <input id="image" name="image" type="file" class="sr-only">
                             </label>
@@ -142,7 +142,7 @@
         </div>
     </div>
     
-    <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+    <div class="bg-white shadow-sm px-4 py-5 sm:rounded-lg sm:p-6">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Pricing</h3>
@@ -154,7 +154,7 @@
                 <div class="grid grid-cols-6 gap-6">
                     <div class="col-span-6 sm:col-span-3">
                         <label for="compare_at_price" class="block text-sm font-medium text-gray-700">Compare at Price</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="mt-1 relative rounded-md shadow-xs">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">$</span>
                             </div>
@@ -170,7 +170,7 @@
                     
                     <div class="col-span-6 sm:col-span-3">
                         <label for="cost_per_item" class="block text-sm font-medium text-gray-700">Cost per item</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="mt-1 relative rounded-md shadow-xs">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">$</span>
                             </div>
@@ -192,10 +192,10 @@
     </div>
     
     <div class="flex justify-end">
-        <a href="{{ route('admin.products.index') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <a href="{{ route('admin.products.index') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-xs text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Cancel
         </a>
-        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-xs text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             {{ isset($product) ? 'Update Product' : 'Create Product' }}
         </button>
     </div>

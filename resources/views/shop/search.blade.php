@@ -10,7 +10,7 @@
     @if($products->count() > 0)
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach($products as $product)
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                <div class="bg-white overflow-hidden shadow-xs rounded-lg">
                     <a href="{{ route('product.show', $product->slug) }}" class="block">
                         <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                             <img src="{{ $product->getFirstMediaUrl('products') ?: asset('images/placeholder.jpg') }}" 
@@ -38,7 +38,7 @@
             <h3 class="mt-2 text-sm font-medium text-gray-900">No products found</h3>
             <p class="mt-1 text-sm text-gray-500">We couldn't find any products matching your search for "{{ $searchQuery }}".</p>
             <div class="mt-6">
-                <a href="{{ route('shop') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <a href="{{ route('shop') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-xs text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     View all products
                 </a>
             </div>

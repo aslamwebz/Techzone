@@ -6,7 +6,7 @@
                 wire:model="search"
                 wire:keydown.enter="search"
                 placeholder="Search products..." 
-                class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none text-sm transition-all duration-200"
+                class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-hidden text-sm transition-all duration-200"
             >
             <button type="submit" class="absolute right-3 top-2.5 text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,7 +22,7 @@
                 @foreach($results as $product)
                     <a href="{{ route('products.show', $product['slug'] ?? $product['id']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                         <div class="flex items-center">
-                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="h-10 w-10 object-cover rounded">
+                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="h-10 w-10 object-cover rounded-sm">
                             <div class="ml-3">
                                 <div class="font-medium">{{ $product['name'] }}</div>
                                 <div class="text-gray-600">${{ number_format($product['price'], 2) }}</div>
