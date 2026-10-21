@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Livewire\Component;
 
 class CartCounter extends Component
 {
     public $count;
+
     public $subtotal;
 
     protected $listeners = ['cartUpdated' => 'updateCart'];

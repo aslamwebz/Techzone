@@ -2,17 +2,22 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Livewire\Component;
 
 class AddToCart extends Component
 {
     public $productId;
+
     public $quantity = 1;
+
     public $product;
+
     public $inCart = false;
+
     public $cartItem = null;
+
     public $showQuantity = true;
 
     public function mount($productId, $quantity = 1, $showQuantity = true)
@@ -37,7 +42,7 @@ class AddToCart extends Component
     {
 
         $this->validate([
-            'quantity' => 'required|numeric|min:1|max:' . $this->product->quantity
+            'quantity' => 'required|numeric|min:1|max:'.$this->product->quantity,
         ]);
 
         if ($this->inCart) {
@@ -53,7 +58,7 @@ class AddToCart extends Component
                 'options' => [
                     'image' => $this->product->image,
                     'slug' => $this->product->slug,
-                ]
+                ],
             ]);
             $message = 'Product added to cart!';
             $this->inCart = true;
