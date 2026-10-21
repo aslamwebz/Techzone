@@ -10,7 +10,7 @@
         "filament/filament": "^3.3.49",
         "guzzlehttp/guzzle": "^7.10",
         "laravel/framework": "^12.53",
-        "laravel/tinker": "^2.11.1",
+        "laravel/tinker": "^3.0",
         "livewire/livewire": "^3.7.11",
         "livewire/volt": "^1.10.3",
         "owen-it/laravel-auditing": "^14.0",
