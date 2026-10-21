@@ -1,6 +1,6 @@
 <?php
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Facades\Cart;
 use NumberFormatter;
 
 if (! function_exists('format_currency')) {

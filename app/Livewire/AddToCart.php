@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Facades\Cart;
 use App\Models\Product;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\Component;
 
 class AddToCart extends Component

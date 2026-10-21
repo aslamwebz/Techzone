@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Cart;
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Facades\Cart;
 use Livewire\Component;
 
 class Dropdown extends Component

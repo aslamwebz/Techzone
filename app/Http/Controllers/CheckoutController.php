@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Facades\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

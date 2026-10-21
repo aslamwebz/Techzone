@@ -2,65 +2,29 @@
 
 namespace App\Providers;
 
-use Gloudemans\Shoppingcart\Cart;
+use App\Services\Cart\Cart;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
 {
-    /**
-     * The shopping cart instance.
-     *
-     * @var Cart
-     */
-    protected $cart;
-
     /**
      * Register services.
      */
     public function register(): void
     {
         $this->app->singleton('cart', function ($app) {
-            $storage = $app['session'];
-            $events = $app['events'];
-            $instanceName = 'default';
-            $session_key = config('app.key');
-
-            // Get the cart configuration
-            $config = config('cart', [
-                'tax' => 0,
-                'database' => [
-                    'connection' => null,
-                    'table' => 'shopping_cart',
-                ],
-                'destroy_on_logout' => false,
-                'format' => [
-                    'decimals' => 2,
-                    'decimal_point' => '.',
-                    'thousand_separator' => '',
-                ],
-            ]);
-
-            // Create a new cart instance with our configuration
             return new Cart(
-                $storage,
-                $events,
-                $instanceName,
-                $session_key,
-                $config
+                $app['session.store'],
+                $app['events'],
+                $app['db']
             );
         });
+
+        $this->app->alias('cart', Cart::class);
     }
 
     /**
      * Bootstrap services.
      */
-    public function boot(): void
-    {
-        // Publish configuration file if it doesn't exist
-        if (! file_exists(config_path('cart.php'))) {
-            $this->publishes([
-                __DIR__.'/../../vendor/hardevine/shoppingcart/config/cart.php' => config_path('cart.php'),
-            ], 'config');
-        }
-    }
+    public function boot(): void {}
 }

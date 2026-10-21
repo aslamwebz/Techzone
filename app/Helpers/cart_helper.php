@@ -1,6 +1,6 @@
 <?php
 
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Facades\Cart;
 
 if (! function_exists('format_currency')) {
     /**
