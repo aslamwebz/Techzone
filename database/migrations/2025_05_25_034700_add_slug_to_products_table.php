@@ -55,7 +55,7 @@ return new class extends Migration
                 'dimensions',
                 'sku',
                 'rating',
-                'reviews_count'
+                'reviews_count',
             ]);
         });
     }
