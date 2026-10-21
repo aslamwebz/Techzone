@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -21,12 +19,12 @@ class DashboardController extends Controller
         $totalCategories = Category::count();
         $totalUsers = User::count();
         $totalOrders = 0; // We'll implement orders later
-        
+
         $recentProducts = Product::with('category')
             ->latest()
             ->take(5)
             ->get();
-        
+
         return view('dashboard', [
             'totalProducts' => $totalProducts,
             'totalCategories' => $totalCategories,

@@ -12,7 +12,6 @@ return [
     */
     'tax' => 21, // Set to your preferred tax rate (e.g., 21 for 21%)
 
-
     /*
     |--------------------------------------------------------------------------
     | Database settings

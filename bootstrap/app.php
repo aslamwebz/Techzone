@@ -11,7 +11,11 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'roles' => \App\Http\Middleware\RoleMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
@@ -22,6 +26,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->create();
 
 // Register the Cart alias
-class_alias(\App\Facades\Cart::class, 'Cart');
+if (! class_exists('Cart')) {
+    class_alias(\App\Facades\Cart::class, 'Cart');
+}
 
 return $app;
