@@ -7,11 +7,11 @@
     "license": "MIT",
     "require": {
         "php": "~8.4.27 || ^8.5.12",
-        "filament/filament": "^4.15",
+        "filament/filament": "^5.10",
         "guzzlehttp/guzzle": "^7.10",
         "laravel/framework": "^12.53",
         "laravel/tinker": "^3.0",
-        "livewire/livewire": "^3.7.11",
+        "livewire/livewire": "^4.4",
         "livewire/volt": "^1.10.3",
         "owen-it/laravel-auditing": "^14.0",
         "pragmarx/google2fa-laravel": "^3.0",
