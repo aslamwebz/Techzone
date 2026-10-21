@@ -1,12 +1,13 @@
 <?php
 
+use App\Models\ActivityLog;
 use App\Services\ActivityLogger;
 
 if (! function_exists('activity')) {
     /**
      * Log an activity.
      *
-     * @return \App\Services\ActivityLogger|\App\Models\ActivityLog
+     * @return ActivityLogger|ActivityLog
      */
     function activity(?string $description = null)
     {

@@ -1,19 +1,25 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Livewire\Shop;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', [ShopController::class, 'index'])->name('home');
 Route::get('/search', [ShopController::class, 'search'])->name('search');
-Route::get('/shop', \App\Livewire\Shop::class)->name('shop');
-Route::get('/shop/category/{category:slug}', \App\Livewire\Shop::class)->name('shop.category');
+Route::get('/shop', Shop::class)->name('shop');
+Route::get('/shop/category/{category:slug}', Shop::class)->name('shop.category');
 Route::get('/product/{product:slug}', [ShopController::class, 'show'])->name('product.show');
 
 // Additional pages
@@ -39,7 +45,7 @@ Route::get('/test-cart', function () {
             'message' => 'Cart is working!',
             'cart_count' => $cart->count(),
         ]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'message' => 'Cart error: '.$e->getMessage(),
@@ -65,10 +71,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Users Management
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        Route::resource('users', UserController::class);
 
         // Roles & Permissions
-        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class)->except(['show']);
+        Route::resource('roles', RoleController::class)->except(['show']);
 
         // Products Management
         Route::resource('products', ProductController::class);
@@ -77,21 +83,21 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('categories', CategoryController::class);
 
         // Orders Management
-        Route::get('/orders', [\App\Http\Controllers\Admin\AdminController::class, 'orders'])->name('orders.index');
-        Route::get('/orders/{order}', [\App\Http\Controllers\Admin\AdminController::class, 'showOrder'])->name('orders.show');
-        Route::put('/orders/{order}/status', [\App\Http\Controllers\Admin\AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
+        Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
+        Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');
+        Route::put('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
 
         // Settings
-        Route::get('/settings', [\App\Http\Controllers\Admin\AdminController::class, 'settings'])->name('settings');
-        Route::post('/settings', [\App\Http\Controllers\Admin\AdminController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+        Route::post('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
 
         // Activity Logs
         Route::prefix('logs')->name('logs.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('index');
-            Route::get('/dashboard', [\App\Http\Controllers\Admin\ActivityLogController::class, 'dashboard'])->name('dashboard');
-            Route::get('/user-activity', [\App\Http\Controllers\Admin\ActivityLogController::class, 'userActivity'])->name('user-activity');
-            Route::get('/user-activity/{user}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'userActivity'])->name('user-activity.show');
-            Route::get('/{log}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
+            Route::get('/', [ActivityLogController::class, 'index'])->name('index');
+            Route::get('/dashboard', [ActivityLogController::class, 'dashboard'])->name('dashboard');
+            Route::get('/user-activity', [ActivityLogController::class, 'userActivity'])->name('user-activity');
+            Route::get('/user-activity/{user}', [ActivityLogController::class, 'userActivity'])->name('user-activity.show');
+            Route::get('/{log}', [ActivityLogController::class, 'show'])->name('show');
         });
     });
 
@@ -99,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Checkout routes
-    Route::get('/checkout', [\App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

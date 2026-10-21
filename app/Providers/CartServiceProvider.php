@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Gloudemans\Shoppingcart\Cart;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
@@ -9,7 +10,7 @@ class CartServiceProvider extends ServiceProvider
     /**
      * The shopping cart instance.
      *
-     * @var \Gloudemans\Shoppingcart\Cart
+     * @var Cart
      */
     protected $cart;
 
@@ -40,7 +41,7 @@ class CartServiceProvider extends ServiceProvider
             ]);
 
             // Create a new cart instance with our configuration
-            return new \Gloudemans\Shoppingcart\Cart(
+            return new Cart(
                 $storage,
                 $events,
                 $instanceName,

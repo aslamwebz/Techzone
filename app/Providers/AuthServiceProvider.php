@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\ActivityLog;
 use App\Models\User;
+use App\Policies\ActivityLogPolicy;
+use App\Policies\AdminPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -16,8 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        \App\Models\ActivityLog::class => \App\Policies\ActivityLogPolicy::class,
-        User::class => \App\Policies\AdminPolicy::class,
+        ActivityLog::class => ActivityLogPolicy::class,
+        User::class => AdminPolicy::class,
     ];
 
     /**

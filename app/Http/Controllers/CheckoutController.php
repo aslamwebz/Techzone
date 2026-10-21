@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
     /**
      * Display the checkout page.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -43,12 +45,12 @@ class CheckoutController extends Controller
     /**
      * Process the checkout.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     /**
      * Process the checkout form submission.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -113,7 +115,7 @@ class CheckoutController extends Controller
     /**
      * Display the checkout success page.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function success()
     {

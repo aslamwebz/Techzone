@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -42,9 +43,9 @@ return new class extends Migration
                 if (! Schema::hasColumn('users', 'password_changed_at')) {
                     $table->timestamp('password_changed_at')->nullable()->after('banned_at');
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Log the error and continue
-                \Illuminate\Support\Facades\Log::error('Migration error: '.$e->getMessage());
+                Log::error('Migration error: '.$e->getMessage());
             }
         });
     }

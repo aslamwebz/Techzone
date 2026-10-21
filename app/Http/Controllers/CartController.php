@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Cart;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class CartController extends Controller
 {
     /**
      * Display the shopping cart.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -27,7 +30,7 @@ class CartController extends Controller
      * Add a product to the shopping cart.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function addToCart($id, Request $request)
     {
@@ -102,7 +105,7 @@ class CartController extends Controller
     /**
      * Update the specified item in the cart.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function updateCart(Request $request)
     {
@@ -148,7 +151,7 @@ class CartController extends Controller
      * Remove the specified item from cart.
      *
      * @param  string  $rowId
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function removeFromCart($rowId)
     {
@@ -175,7 +178,7 @@ class CartController extends Controller
     /**
      * Clear all items from the cart.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function clearCart()
     {
@@ -193,7 +196,7 @@ class CartController extends Controller
     /**
      * Get the current cart count and totals.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function cartCount()
     {

@@ -93,7 +93,7 @@ class RequestLoggerMiddleware
     /**
      * Log the response details.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  Response  $response
      */
     protected function logResponse(Request $request, $response): void
     {

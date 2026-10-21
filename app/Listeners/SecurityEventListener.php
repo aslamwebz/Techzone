@@ -18,6 +18,7 @@ use Illuminate\Auth\Events\SuspiciousLoginAttempt;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
@@ -260,7 +261,7 @@ class SecurityEventListener implements ShouldQueue
     /**
      * Register the listeners for the subscriber.
      *
-     * @param  \Illuminate\Events\Dispatcher  $events
+     * @param  Dispatcher  $events
      */
     public function subscribe($events): array
     {

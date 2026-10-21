@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class CheckRole
@@ -11,7 +13,7 @@ class CheckRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (\Symfony\Component\HttpFoundation\Response)  $next
      * @param  string  ...$roles
      * @return mixed
      */
@@ -49,8 +51,8 @@ class CheckRole
     /**
      * Handle unauthenticated users.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @return Response|JsonResponse
      */
     protected function handleUnauthenticated($request)
     {
@@ -64,8 +66,8 @@ class CheckRole
     /**
      * Handle unauthorized access.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @return Response|JsonResponse
      */
     protected function handleUnauthorized($request)
     {

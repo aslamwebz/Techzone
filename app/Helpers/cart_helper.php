@@ -16,9 +16,9 @@ if (! function_exists('format_currency')) {
         // Convert string to float if needed
         $amount = is_string($amount) ? (float) str_replace([',', ' '], ['.', ''], $amount) : $amount;
 
-        $formatter = new \NumberFormatter('en_NG', \NumberFormatter::CURRENCY);
-        $formatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
-        $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+        $formatter = new NumberFormatter('en_NG', NumberFormatter::CURRENCY);
+        $formatter->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
+        $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
 
         return $formatter->formatCurrency($amount, $currency);
     }

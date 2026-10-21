@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ShopController extends Controller
 {
@@ -14,7 +15,7 @@ class ShopController extends Controller
     /**
      * Display the home page with featured products and new arrivals.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -151,7 +152,7 @@ class ShopController extends Controller
     /**
      * Handle product search
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function search(Request $request)
     {

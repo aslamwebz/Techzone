@@ -8,6 +8,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +23,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
         //
@@ -58,10 +60,10 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function render($request, Throwable $e)
     {
@@ -111,7 +113,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle token mismatch exception (expired session).
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleTokenMismatch($request, Throwable $e)
@@ -134,7 +136,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle 403 Forbidden errors.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleAuthorizationException($request, Throwable $e)
@@ -157,7 +159,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle 404 Not Found errors.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleNotFound($request, Throwable $e)
@@ -180,7 +182,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle 405 Method Not Allowed errors.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleMethodNotAllowed($request, Throwable $e)
@@ -203,7 +205,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle 429 Too Many Requests errors.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleThrottleRequests($request, Throwable $e)
@@ -229,7 +231,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle 500 Internal Server Error.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleServerError($request, Throwable $e)
@@ -327,7 +329,7 @@ class Handler extends ExceptionHandler
     /**
      * Handle authorization exception.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleAuthorizationException($request, AuthorizationException $e)
@@ -353,7 +355,7 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into a response.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -366,8 +368,8 @@ class Handler extends ExceptionHandler
     /**
      * Convert a validation exception into a JSON response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @return JsonResponse
      */
     protected function invalidJson($request, ValidationException $exception)
     {

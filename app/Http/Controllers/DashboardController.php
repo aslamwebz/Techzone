@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     /**
      * Display the dashboard.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {

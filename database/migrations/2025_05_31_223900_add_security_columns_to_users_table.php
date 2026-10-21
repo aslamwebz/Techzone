@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         // Get the current columns in the users table
-        $existingColumns = \DB::getSchemaBuilder()->getColumnListing('users');
+        $existingColumns = DB::getSchemaBuilder()->getColumnListing('users');
 
         Schema::table('users', function (Blueprint $table) use ($existingColumns) {
             if (! in_array('banned_at', $existingColumns)) {

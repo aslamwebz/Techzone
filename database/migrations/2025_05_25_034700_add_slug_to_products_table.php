@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,9 +27,9 @@ return new class extends Migration
         });
 
         // Update existing products with slugs
-        \App\Models\Product::all()->each(function ($product) {
+        Product::all()->each(function ($product) {
             $product->update([
-                'slug' => \Illuminate\Support\Str::slug($product->name),
+                'slug' => Illuminate\Support\Str::slug($product->name),
                 'short_description' => $product->short_description ?? Str::limit($product->description, 100),
             ]);
         });

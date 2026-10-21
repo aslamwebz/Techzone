@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,13 +13,13 @@ class ThrottleLoginAttempts extends ThrottleRequests
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int|string  $maxAttempts
      * @param  float|int  $decayMinutes
      * @param  string  $prefix
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
-     * @throws \Illuminate\Http\Exceptions\ThrottleRequestsException
+     * @throws ThrottleRequestsException
      */
     public function handle($request, Closure $next, $maxAttempts = 5, $decayMinutes = 15, $prefix = '')
     {
@@ -53,7 +54,7 @@ class ThrottleLoginAttempts extends ThrottleRequests
      * @param  string  $key
      * @param  int  $maxAttempts
      * @param  int  $retryAfter
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     protected function buildResponse($key, $maxAttempts, $retryAfter)
     {

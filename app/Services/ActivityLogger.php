@@ -11,14 +11,14 @@ class ActivityLogger
     /**
      * The model that is the subject of the activity.
      *
-     * @var \Illuminate\Database\Eloquent\Model|null
+     * @var Model|null
      */
     protected $subject = null;
 
     /**
      * The user that triggered the activity.
      *
-     * @var \Illuminate\Database\Eloquent\Model|null
+     * @var Model|null
      */
     protected $causer = null;
 
@@ -119,7 +119,7 @@ class ActivityLogger
     /**
      * Log the activity.
      *
-     * @return \App\Models\ActivityLog
+     * @return ActivityLog
      */
     public function log(string $description)
     {

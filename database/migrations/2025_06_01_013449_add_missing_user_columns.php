@@ -15,7 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         // Get the current columns in the users table
-        $existingColumns = \DB::getSchemaBuilder()->getColumnListing('users');
+        $existingColumns = DB::getSchemaBuilder()->getColumnListing('users');
 
         // Define the columns we want to add if they don't exist
         $columnsToAdd = [

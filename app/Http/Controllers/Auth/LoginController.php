@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 
 class LoginController extends Controller
@@ -50,7 +55,7 @@ class LoginController extends Controller
 
     protected function fireLockoutEvent(Request $request): void
     {
-        event(new \Illuminate\Auth\Events\Lockout($request));
+        event(new Lockout($request));
     }
 
     protected function sendLockoutResponse(Request $request)
@@ -85,7 +90,7 @@ class LoginController extends Controller
     /**
      * Show the application's login form.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function showLoginForm()
     {
@@ -95,9 +100,9 @@ class LoginController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @return RedirectResponse|Response|\Illuminate\Http\JsonResponse
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function login(Request $request)
     {
@@ -137,7 +142,7 @@ class LoginController extends Controller
      *
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function validateLogin(Request $request)
     {
@@ -172,7 +177,7 @@ class LoginController extends Controller
     /**
      * Send the response after the user was authenticated.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendLoginResponse(Request $request)
     {
@@ -195,7 +200,7 @@ class LoginController extends Controller
      * @param  string  $message
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function sendFailedLoginResponse(Request $request, $message = null)
     {
@@ -221,7 +226,7 @@ class LoginController extends Controller
     /**
      * Get the guard to be used during authentication.
      *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     * @return StatefulGuard
      */
     protected function guard()
     {
@@ -272,7 +277,7 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,7 +14,7 @@ class SearchController extends Controller
     /**
      * Search for products
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
@@ -55,7 +56,7 @@ class SearchController extends Controller
     /**
      * Get search suggestions
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function suggestions(Request $request)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +59,7 @@ class Cart extends Model
      * Get the current cart items for the authenticated user or session.
      *
      * @param  string|int  $identifier  User ID or session ID
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public static function getCartItems($identifier = null)
     {
