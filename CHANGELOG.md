@@ -1,41 +1,35 @@
-# Release Notes
+# Changelog
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v12.0.7...12.x)
+All notable changes to the **Techzone** project are documented in this file.
 
-## [v12.0.7](https://github.com/laravel/laravel/compare/v12.0.6...v12.0.7) - 2025-04-15
+## [2.0.0] - 2026-10-22
 
-* Add `composer run test` command by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/laravel/pull/6598
-* Partner Directory Changes in ReadME by [@joshcirre](https://github.com/joshcirre) in https://github.com/laravel/laravel/pull/6599
+### Security & Hardening
+- Enforced PHP `~8.4.27 || ^8.5.12` constraint and platform lock to resolve PHP RCE vulnerabilities (CVE-2026-109618 / CVE-2026-109619).
+- Clean security advisory profile confirmed via `composer audit` (0 vulnerabilities).
+- Implemented transactional checkout with row-level pessimistic locking (`lockForUpdate()`) to verify inventory before order completion.
+- Secured mass-assignment vectors in `User` and `ProfileController` to prevent privilege escalation.
+- Added rate limiting on sensitive routes: login (`throttle:5,1`), checkout (`throttle:10,1`), and cart (`throttle:60,1`).
+- Implemented authorization gates and model policies (`ProductPolicy`, `CategoryPolicy`, `UserPolicy`, `OrderPolicy`).
+- Replaced inline validation with dedicated Form Requests across all administrative and customer forms.
+- Configured Google Authenticator Two-Factor Authentication with dedicated verification flows.
 
-## [v12.0.6](https://github.com/laravel/laravel/compare/v12.0.5...v12.0.6) - 2025-04-08
+### Major Upgrades
+- Upgraded Laravel framework from `12.x` to `13.38.0`.
+- Upgraded Filament admin panel from `3.x` to `5.10.3`.
+- Upgraded Livewire from `3.x` to `4.4.8` and Livewire Volt to `1.11.2`.
+- Migrated design system to Tailwind CSS `v4.3.3` with `@tailwindcss/postcss` and Vite `6.3.5`.
+- Upgraded Pragmarx Google2FA Laravel to `v3.0.1`, Owen-It Auditing to `v14.0.6`, Sentry to `v4.29.0`, Spatie Honeypot to `v4.7.3`.
+- Replaced abandoned `hardevine/shoppingcart` package with an in-house session-backed `Cart` and `CartItem` service.
+- Removed deprecated `doctrine/dbal` dependency.
 
-**Full Changelog**: https://github.com/laravel/laravel/compare/v12.0.5...v12.0.6
+### Performance & Quality
+- Resolved N+1 query patterns across catalog, product details, new arrivals, and search.
+- Corrected database column mismatch (`sale_price` instead of non-existent `compare_at_price`).
+- Added Order and OrderItem Eloquent models, migrations, and administrative views.
+- Expanded automated test coverage from 2 skeleton tests to 67 unit and feature tests (197 assertions).
+- Automated CI pipeline via GitHub Actions on PHP 8.4 with automated Pint, audit, build, and test steps.
+- Configured automated Dependabot dependency updates across Composer, NPM, and GitHub Actions.
 
-## [v12.0.5](https://github.com/laravel/laravel/compare/v12.0.4...v12.0.5) - 2025-04-02
-
-* [12.x] Update `config/mail.php` to match the latest core configuration by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/laravel/pull/6594
-
-## [v12.0.4](https://github.com/laravel/laravel/compare/v12.0.3...v12.0.4) - 2025-03-31
-
-* Bump vite from 6.0.11 to 6.2.3 - Vulnerability patch by [@abdel-aouby](https://github.com/abdel-aouby) in https://github.com/laravel/laravel/pull/6586
-* Bump vite from 6.2.3 to 6.2.4 by [@thinkverse](https://github.com/thinkverse) in https://github.com/laravel/laravel/pull/6590
-
-## [v12.0.3](https://github.com/laravel/laravel/compare/v12.0.2...v12.0.3) - 2025-03-17
-
-* Remove reverted change from CHANGELOG.md by [@AJenbo](https://github.com/AJenbo) in https://github.com/laravel/laravel/pull/6565
-* Improves clarity in app.css file by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/laravel/pull/6569
-* [12.x] Refactor: Structural improvement for clarity by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/laravel/pull/6574
-* Bump axios from 1.7.9 to 1.8.2 - Vulnerability patch by [@abdel-aouby](https://github.com/abdel-aouby) in https://github.com/laravel/laravel/pull/6572
-* [12.x] Remove Unnecessarily [@source](https://github.com/source) by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/laravel/pull/6584
-
-## [v12.0.2](https://github.com/laravel/laravel/compare/v12.0.1...v12.0.2) - 2025-03-04
-
-* Make the github test action run out of the box independent of the choice of testing framework by [@ndeblauw](https://github.com/ndeblauw) in https://github.com/laravel/laravel/pull/6555
-
-## [v12.0.1](https://github.com/laravel/laravel/compare/v12.0.0...v12.0.1) - 2025-02-24
-
-* [12.x] prefer stable stability by [@pataar](https://github.com/pataar) in https://github.com/laravel/laravel/pull/6548
-
-## [v12.0.0 (2025-??-??)](https://github.com/laravel/laravel/compare/v11.0.2...v12.0.0)
-
-Laravel 12 includes a variety of changes to the application skeleton. Please consult the diff to see what's new.
+## [1.0.0] - 2025-05-24
+- Initial release with Laravel e-commerce storefront, admin panel, and authentication.

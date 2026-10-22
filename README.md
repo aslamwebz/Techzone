@@ -1,61 +1,150 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Techzone — Modern E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Tests](https://github.com/aslamwebz/Techzone/actions/workflows/tests.yml/badge.svg)](https://github.com/aslamwebz/Techzone/actions/workflows/tests.yml)
+[![PHP Version](https://img.shields.io/badge/php-~8.4.27%20||%20^8.5.12-777bb4.svg)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/laravel-13.x-ff2d20.svg)](https://laravel.com)
+[![Filament](https://img.shields.io/badge/filament-5.x-f59e0b.svg)](https://filamentphp.com)
+[![Tailwind CSS](https://img.shields.io/badge/tailwindcss-4.x-38bdf8.svg)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## About Laravel
+Techzone is a full-featured, secure e-commerce application built on **Laravel 13**, **Filament 5**, **Livewire 4**, and **Tailwind CSS 4**. Designed for electronics and hardware retail, it features real-time search and catalog filtering, an in-house session-backed cart engine, pessimistic stock locking at checkout, Google 2FA authentication, and back-office management.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Screenshots
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Shop Catalog | Product Detail |
+|:---:|:---:|
+| ![Shop Catalog](docs/shop.png) | ![Product Detail](docs/product.png) |
 
-## Learning Laravel
+| Shopping Cart | Secure Checkout |
+|:---:|:---:|
+| ![Shopping Cart](docs/cart.png) | ![Checkout](docs/checkout.png) |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Admin Management |
+|:---:|
+| ![Admin Management](docs/admin.png) |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Key Features
 
-## Laravel Sponsors
+- **Product Catalog & Livewire Search:** Real-time search, price range filtering, category scoping, and rating filters with zero N+1 queries.
+- **Native Cart Engine:** Session-backed `Cart` and `CartItem` services with calculated subtotals, configurable taxes, item metadata, and comprehensive unit tests.
+- **Stock Checks & Transactions:** Atomic checkout execution within database transactions, utilizing pessimistic row locks (`lockForUpdate()`) to prevent race conditions and overselling.
+- **Multi-Factor Security:**
+  - Google Authenticator (TOTP) 2FA integration.
+  - Rate limiting on authentication (`throttle:5,1`), checkout (`throttle:10,1`), and cart operations (`throttle:60,1`).
+  - Spatie Honeypot anti-bot protection.
+  - Granular authorization policies (`ProductPolicy`, `CategoryPolicy`, `UserPolicy`, `OrderPolicy`) and admin gates.
+  - Dedicated Form Requests for input validation and strict mass-assignment protection.
+  - Owen-It Eloquent audit trails and Sentry monitoring.
+- **Administrative Portal:** Filament 5 & customized management interfaces for product inventory, category taxonomy, user roles, order statuses, and system audit logs.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Tech Stack & Versions
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **PHP:** `~8.4.27 || ^8.5.12` (hardened against CVE-2026-109618 / CVE-2026-109619)
+- **Framework:** Laravel `v13.38.0`
+- **Admin Panel:** Filament `v5.10.3`
+- **Frontend Interactivity:** Livewire `v4.4.8` & Volt `v1.11.2`
+- **Design System:** Tailwind CSS `v4.3.3` with `@tailwindcss/postcss` & Vite `v6.3.5`
+- **Authentication:** Laravel Breeze & Pragmarx Google2FA Laravel `v3.0.1`
+- **Auditing & Telemetry:** Owen-It Laravel Auditing `v14.0.6` & Sentry Laravel `v4.29.0`
+- **Anti-Spam:** Spatie Laravel Honeypot `v4.7.3`
+- **Code Quality:** Laravel Pint & PHPUnit `v11.5.57`
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Getting Started
 
-## Code of Conduct
+### Prerequisites
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP `^8.4` with extensions (`pdo_sqlite`, `curl`, `mbstring`, `zip`, `bcmath`, `fileinfo`)
+- Composer `^2.7`
+- Node.js `^20` & NPM
 
-## Security Vulnerabilities
+### Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/aslamwebz/Techzone.git
+   cd Techzone
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Configure environment:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Initialize database & demo fixtures:**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+5. **Build assets:**
+   ```bash
+   npm run build
+   ```
+
+6. **Start local development server:**
+   ```bash
+   php artisan serve
+   ```
+   Visit `http://127.0.0.1:8000` in your browser.
+
+---
+
+## Demo Credentials (Local Development)
+
+The database seeder provisions local demo accounts:
+
+| Role | Email | Password | Access |
+|---|---|---|---|
+| **Admin** | `admin@example.com` | `password123` | Storefront, Admin Panel (`/admin`), Dashboard |
+| **Customer** | `user@example.com` | `password123` | Storefront, Cart, Checkout, User Profile |
+
+---
+
+## Verification & Testing
+
+Run the automated test suite and static analysis:
+
+```bash
+# Execute unit and feature tests (67 tests, 197 assertions)
+php artisan test
+
+# Verify code style standards
+vendor/bin/pint --test
+
+# Audit composer packages for security vulnerabilities
+composer audit
+
+# Build frontend production bundle
+npm run build
+```
+
+---
+
+## Continuous Integration
+
+GitHub Actions executes `.github/workflows/tests.yml` on PHP 8.4 on every push and pull request:
+- Automated `composer audit` vulnerability scanning.
+- Style verification via `vendor/bin/pint --test`.
+- Asset compilation via `npm run build`.
+- Execution of the full PHPUnit test suite.
+- Dependabot monitors weekly updates across Composer, NPM, and GitHub Actions.
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This software is open-sourced under the [MIT license](LICENSE).
