@@ -31,7 +31,7 @@ class CreateAdminUser extends Command
         $name = $this->ask('Enter the admin name');
         $email = $this->ask('Enter the admin email');
         $password = $this->secret('Enter the admin password');
-        
+
         // Validate input
         $validator = \Validator::make(
             ['email' => $email, 'password' => $password],
@@ -40,14 +40,15 @@ class CreateAdminUser extends Command
                 'password' => 'required|min:8',
             ]
         );
-        
+
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
+
             return 1;
         }
-        
+
         // Create admin user
         $user = User::create([
             'name' => $name,
@@ -57,11 +58,11 @@ class CreateAdminUser extends Command
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
-        
+
         $this->info('Admin user created successfully!');
-        $this->info('Name: ' . $user->name);
-        $this->info('Email: ' . $user->email);
-        
+        $this->info('Name: '.$user->name);
+        $this->info('Email: '.$user->email);
+
         return 0;
     }
 }

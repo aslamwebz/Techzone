@@ -66,7 +66,7 @@
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
+        "@@context": "https://schema.org",
         "@type": "WebSite",
         "name": "TechZone",
         "url": "{{ config('app.url') }}",
@@ -80,7 +80,7 @@
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900">
     <!-- Top Bar -->
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm">
+    <div class="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-sm">
         <div class="container mx-auto px-4 py-2 flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center space-x-4 mb-2 md:mb-0">
                 <a href="tel:+12345678900" class="flex items-center hover:text-indigo-200 transition-colors">
@@ -114,12 +114,12 @@
     </div>
 
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50 transform transition-transform duration-300" id="main-header">
+    <header class="bg-white shadow-xs sticky top-0 z-50 transform transition-transform duration-300" id="main-header">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <!-- Mobile menu button -->
                 <div class="flex items-center md:hidden">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none" aria-controls="mobile-menu" :aria-expanded="mobileMenuOpen">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-hidden" aria-controls="mobile-menu" :aria-expanded="mobileMenuOpen">
                         <span class="sr-only">Open main menu</span>
                         <i class="fas fa-bars text-xl" x-show="!mobileMenuOpen"></i>
                         <i class="fas fa-times text-xl" x-show="mobileMenuOpen"></i>
@@ -127,8 +127,8 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('home') }}" class="text-2xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                         TechZone
                     </a>
                 </div>
@@ -161,25 +161,14 @@
                 <!-- Right side icons -->
                 <div class="flex items-center space-x-4">
                     <!-- Search Button (Mobile) -->
-                    <button @click="searchOpen = !searchOpen" class="md:hidden text-gray-500 hover:text-indigo-600 focus:outline-none">
+                    <button @click="searchOpen = !searchOpen" class="md:hidden text-gray-500 hover:text-indigo-600 focus:outline-hidden">
                         <span class="sr-only">Search</span>
                         <i class="fas fa-search text-xl"></i>
                     </button>
 
                     <!-- Search (Desktop) -->
                     <div class="hidden md:block relative w-64">
-                        <form action="{{ route('shop') }}" method="GET" class="relative">
-                            <input 
-                                type="text" 
-                                name="search" 
-                                placeholder="Search products..." 
-                                class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none text-sm transition-all duration-200"
-                                value="{{ request('search') }}"
-                            >
-                            <button type="submit" class="absolute right-0 top-0 h-full px-4 text-gray-500 hover:text-indigo-600 focus:outline-none">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
+                        <livewire:search-products />
                     </div>
 
                     <!-- Cart Counter -->
@@ -188,12 +177,12 @@
                     <!-- User Account -->
                     @auth
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-none">
+                            <button @click="open = !open" class="flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 focus:outline-hidden">
                                 <span class="hidden md:inline">{{ Auth::user()->name }}</span>
                                 <i class="fas fa-chevron-down ml-1 text-xs"></i>
                             </button>
                             
-                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu">
+                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-hidden z-50" role="menu">
                                 <div class="py-1" role="none">
                                     <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
@@ -215,7 +204,7 @@
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-hidden">
                         <span class="sr-only">Open main menu</span>
                         <i class="fas fa-bars text-xl"></i>
                     </button>
@@ -226,15 +215,9 @@
         <!-- Mobile menu -->
         <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white border-t border-gray-200">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <form action="{{ route('shop') }}" method="GET" class="px-2 py-3">
-                    <div class="relative">
-                        <input type="text" name="search" placeholder="Search products..." 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <button type="submit" class="absolute right-2 top-2 text-gray-400 hover:text-gray-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                <div class="px-2 py-3">
+                    <livewire:search-products />
+                </div>
                 <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Home
                 </a>

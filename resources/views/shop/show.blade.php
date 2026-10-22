@@ -264,7 +264,7 @@
                         <div class="flex items-center">
                             <span class="text-3xl font-bold text-gray-900">₦{{ number_format($product->sale_price, 2) }}</span>
                             <span class="ml-2 text-lg text-gray-500 line-through">₦{{ number_format($product->price, 2) }}</span>
-                            <span class="ml-2 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                            <span class="ml-2 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-sm">
                                 {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF
                             </span>
                         </div>
@@ -443,7 +443,7 @@
         <p class="text-indigo-100 max-w-2xl mx-auto mb-8">Get the latest updates on new products and upcoming sales</p>
         
         <form class="max-w-md mx-auto flex">
-            <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-l-lg focus:outline-none text-gray-900">
+            <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-l-lg focus:outline-hidden text-gray-900">
             <button type="submit" class="bg-indigo-800 hover:bg-indigo-900 text-white px-6 rounded-r-lg font-semibold transition">
                 Subscribe
             </button>

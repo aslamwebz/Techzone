@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'slug',
@@ -94,5 +97,15 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return '$'.number_format((float) ($this->sale_price ?? $this->price), 2);
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image ? asset('storage/'.$this->image) : 'https://via.placeholder.com/300';
     }
 }

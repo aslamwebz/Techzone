@@ -12,21 +12,29 @@ class AdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        $user = Auth::user();
+
+        if (! $user) {
             return redirect()->route('login');
         }
 
-        // Check if the user has the 'admin' role
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
+        // Check if user is admin either by is_admin flag or role
+        if ($user->isAdmin() || $user->role === 'admin') {
+            return $next($request);
         }
 
-        return $next($request);
+        // Log the unauthorized access attempt
+        \Log::warning('Unauthorized admin access attempt', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'ip' => $request->ip(),
+            'url' => $request->fullUrl(),
+        ]);
+
+        abort(403, 'Unauthorized access. You need admin privileges to access this page.');
     }
 }

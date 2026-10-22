@@ -3,7 +3,7 @@
         <div class="flex items-center space-x-2">
             <button 
                 wire:click="removeFromCart"
-                class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                class="px-4 py-2 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors"
             >
                 Remove from Cart
             </button>
@@ -35,7 +35,7 @@
                     wire:model.live="quantity" 
                     min="1" 
                     max="{{ $product->quantity }}" 
-                    class="w-20 px-3 py-2 border rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    class="w-20 px-3 py-2 border rounded-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                 <button 
                     wire:click="addToCart"

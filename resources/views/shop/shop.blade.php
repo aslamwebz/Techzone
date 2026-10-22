@@ -212,9 +212,9 @@
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Sidebar -->
-            <aside class="w-full md:w-64 flex-shrink-0">
+            <aside class="w-full md:w-64 shrink-0">
                 <!-- Categories -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="bg-white rounded-lg shadow-xs p-6 mb-6">
                     <h3 class="text-lg font-semibold mb-4 flex justify-between items-center">
                         <span>Categories</span>
                         <i class="fas fa-chevron-down text-gray-400 text-sm"></i>
@@ -243,7 +243,7 @@
                 </div>
 
                 <!-- Price Range -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="bg-white rounded-lg shadow-xs p-6 mb-6">
                     <h3 class="text-lg font-semibold mb-4">Price Range</h3>
                     <div class="mb-4">
                         <div class="flex justify-between mb-2">
@@ -261,7 +261,7 @@
                 </div>
 
                 <!-- Brands -->
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="bg-white rounded-lg shadow-xs p-6 mb-6">
                     <h3 class="text-lg font-semibold mb-4">Brands</h3>
                     <div class="space-y-2">
                         @php
@@ -284,7 +284,7 @@
                 </div>
 
                 <!-- Rating -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="bg-white rounded-lg shadow-xs p-6">
                     <h3 class="text-lg font-semibold mb-4">Customer Review</h3>
                     <div class="space-y-2">
                         @for($i = 5; $i >= 1; $i--)
@@ -312,7 +312,7 @@
             <!-- Main Content -->
             <div class="flex-1">
                 <!-- Sorting and View Options -->
-                <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="bg-white rounded-lg shadow-xs p-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="text-sm text-gray-600">
                         Showing <span class="font-medium">{{ $products->firstItem() }}</span> to 
                         <span class="font-medium">{{ $products->lastItem() }}</span> of 
@@ -323,7 +323,7 @@
                         <div class="flex items-center">
                             <span class="mr-2 text-sm text-gray-600">Sort by:</span>
                             <div class="relative">
-                                <select id="sortBy" class="appearance-none bg-white border border-gray-300 rounded-md pl-3 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <select id="sortBy" class="appearance-none bg-white border border-gray-300 rounded-md pl-3 pr-8 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                     <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest</option>
                                     <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
                                     <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
@@ -351,7 +351,7 @@
                 @if($products->count() > 0)
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         @foreach($products as $product)
-                        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-xs hover:shadow-md transition-shadow duration-300">
                             <!-- Product Card -->
                             <div class="relative group">
                                 <!-- Product Image Link -->
@@ -423,11 +423,11 @@
                                 </div>
                                 
                                 @if($product->sale_price)
-                                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-sm">
                                         Sale
                                     </span>
                                 @elseif($product->is_new)
-                                    <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-sm">
                                         New
                                     </span>
                                 @endif
@@ -489,7 +489,7 @@
                         {{ $products->withQueryString()->links() }}
                     </div>
                 @else
-                    <div class="bg-white rounded-lg shadow-sm p-12 text-center">
+                    <div class="bg-white rounded-lg shadow-xs p-12 text-center">
                         <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-search text-indigo-600 text-3xl"></i>
                         </div>
@@ -509,21 +509,21 @@
 <section class="py-12 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="text-center p-6 bg-white rounded-lg shadow-xs hover:shadow-md transition">
                 <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-truck text-2xl text-indigo-600"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Free Shipping</h3>
                 <p class="text-gray-600">Free shipping on all orders over ₦50,000</p>
             </div>
-            <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="text-center p-6 bg-white rounded-lg shadow-xs hover:shadow-md transition">
                 <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-undo-alt text-2xl text-indigo-600"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Easy Returns</h3>
                 <p class="text-gray-600">30-day return policy for all products</p>
             </div>
-            <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="text-center p-6 bg-white rounded-lg shadow-xs hover:shadow-md transition">
                 <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-lock text-2xl text-indigo-600"></i>
                 </div>

@@ -69,7 +69,7 @@
 <div class="py-12">
     <div class="container mx-auto px-4">
         @if(Cart::count() > 0)
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="bg-white rounded-lg shadow-xs overflow-hidden">
                 <!-- Cart Header -->
                 <div class="hidden md:grid grid-cols-12 bg-gray-50 border-b px-6 py-4">
                     <div class="col-span-6 font-medium text-gray-500">Product</div>
@@ -85,7 +85,7 @@
                             <div class="flex flex-col md:grid md:grid-cols-12 gap-4">
                                 <!-- Product Info -->
                                 <div class="flex items-center col-span-6">
-                                    <a href="{{ route('product.show', $item->options->slug ?? '#' ) }}" class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <a href="{{ route('product.show', $item->options->slug ?? '#' ) }}" class="w-20 h-20 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                         <img src="{{ $item->options->image ?? 'https://via.placeholder.com/150' }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
                                     </a>
                                     <div class="ml-4 flex-1">
@@ -132,13 +132,13 @@
                                         @method('PATCH')
                                         <button type="button" 
                                                 onclick="updateQuantity('{{ $item->rowId }}', -1)" 
-                                                class="w-10 h-10 flex items-center justify-center bg-white text-gray-600 hover:bg-gray-50 focus:outline-none transition-colors">
+                                                class="w-10 h-10 flex items-center justify-center bg-white text-gray-600 hover:bg-gray-50 focus:outline-hidden transition-colors">
                                             <i class="fas fa-minus text-xs"></i>
                                         </button>
                                         <input type="number" id="quantity-{{ $item->rowId }}" name="quantity" min="1" value="{{ $item->qty }}" class="quantity-input" onchange="updateQuantity('{{ $item->rowId }}', this.value)">
                                         <button type="button" 
                                                 onclick="updateQuantity('{{ $item->rowId }}', 1)" 
-                                                class="w-10 h-10 flex items-center justify-center bg-white text-gray-600 hover:bg-gray-50 focus:outline-none transition-colors">
+                                                class="w-10 h-10 flex items-center justify-center bg-white text-gray-600 hover:bg-gray-50 focus:outline-hidden transition-colors">
                                             <i class="fas fa-plus text-xs"></i>
                                         </button>
                                     </form>
@@ -177,15 +177,15 @@
                             <div class="flex items-center">
                                 <input type="text" 
                                        placeholder="Coupon code" 
-                                       class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none">
-                                <button class="px-6 py-3 bg-gray-800 text-white font-medium rounded-r-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition-colors">
+                                       class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-hidden">
+                                <button class="px-6 py-3 bg-gray-800 text-white font-medium rounded-r-lg hover:bg-gray-900 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition-colors">
                                     Apply
                                 </button>
                             </div>
                         </div>
                         
                         <!-- Order Summary -->
-                        <div class="w-full lg:w-1/3 bg-white p-6 rounded-xl shadow-sm">
+                        <div class="w-full lg:w-1/3 bg-white p-6 rounded-xl shadow-xs">
                             <h3 class="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-100">Order Summary</h3>
                             
                             <div class="space-y-3 mb-4">
@@ -210,7 +210,7 @@
                                 </div>
                                 
                                 <a href="{{ route('checkout') }}" 
-                                   class="block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                   class="block w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white text-center py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-indigo-100 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                     Proceed to Checkout
                                 </a>
                                 
@@ -227,7 +227,7 @@
             </div>
             
             <!-- Secure Payment Info -->
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-8" data-aos="fade-up">
+            <div class="bg-white rounded-xl shadow-xs p-6 mb-8" data-aos="fade-up">
                 <div class="text-center">
                     <div class="flex justify-center space-x-1 mb-4">
                         <i class="fas fa-lock text-green-500 text-xl"></i>
@@ -247,7 +247,7 @@
             </div>
         @else
             <!-- Empty Cart -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden py-16 text-center" data-aos="zoom-in">
+            <div class="bg-white rounded-xl shadow-xs overflow-hidden py-16 text-center" data-aos="zoom-in">
                 <div class="max-w-md mx-auto px-4">
                     <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-indigo-50 mb-6">
                         <i class="fas fa-shopping-cart text-4xl text-indigo-600"></i>
@@ -255,7 +255,7 @@
                     <h2 class="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</h2>
                     <p class="text-gray-600 mb-8">Looks like you haven't added anything to your cart yet.</p>
                     <a href="{{ route('shop') }}" 
-                       class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                       class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-xs text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                         <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
                     </a>
                 </div>
@@ -266,7 +266,7 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-6">You might also like</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Product Card 1 -->
-                    <div class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    <div class="group bg-white rounded-xl shadow-xs overflow-hidden hover:shadow-md transition-shadow duration-300">
                         <div class="relative overflow-hidden">
                             <img src="https://via.placeholder.com/300x300" alt="Product" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
@@ -291,7 +291,7 @@
                     </div>
                     
                     <!-- Repeat for other products -->
-                    <div class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    <div class="group bg-white rounded-xl shadow-xs overflow-hidden hover:shadow-md transition-shadow duration-300">
                         <div class="relative overflow-hidden">
                             <img src="https://via.placeholder.com/300x300" alt="Product" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
@@ -441,4 +441,5 @@
         }
     });
 </script>
+@endpush
 @endsection

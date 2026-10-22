@@ -15,7 +15,7 @@
 
 <div class="py-16">
     <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-xs overflow-hidden">
             <div class="p-8 text-center">
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Order Confirmed</h2>
                 <p class="text-gray-600 mb-8">Your order #{{ session('order_id', '12345') }} has been placed successfully.</p>
@@ -48,10 +48,10 @@
                 </div>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="{{ route('shop') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <a href="{{ route('shop') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                         <i class="fas fa-shopping-bag mr-2"></i> Continue Shopping
                     </a>
-                    <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                         <i class="fas fa-user-circle mr-2"></i> View My Orders
                     </a>
                 </div>
@@ -65,7 +65,7 @@
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">Order Summary</h2>
         
-        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xs overflow-hidden">
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
@@ -133,7 +133,7 @@
                         
                         @foreach($orderItems as $item)
                             <div class="py-4 flex items-center border-b border-gray-200">
-                                <div class="flex-shrink-0 h-16 w-16 rounded-md overflow-hidden border border-gray-200">
+                                <div class="shrink-0 h-16 w-16 rounded-md overflow-hidden border border-gray-200">
                                     <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="h-full w-full object-cover">
                                 </div>
                                 <div class="ml-4 flex-1">
@@ -235,14 +235,14 @@
             <span class="block">Ready to shop some more?</span>
             <span class="block text-indigo-200">Check out our latest arrivals.</span>
         </h2>
-        <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0
-        <div class="inline-flex rounded-md shadow">
+        <div class="mt-8 flex lg:mt-0 lg:shrink-0
+        <div class="inline-flex rounded-md shadow-sm">
             <a href="{{ route('shop') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
                 Continue Shopping
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>
         </div>
-        <div class="ml-3 inline-flex rounded-md shadow">
+        <div class="ml-3 inline-flex rounded-md shadow-sm">
             <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 bg-opacity-60 hover:bg-opacity-70">
                 View My Orders
                 <i class="fas fa-user-circle ml-2"></i>

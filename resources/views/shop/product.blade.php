@@ -41,7 +41,7 @@
                                     {{ number_format($product->compare_price, 2) }}
                                 </span>
                             </p>
-                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded mt-2">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm mt-2">
                                 {{ round(($product->compare_price - $product->price) / $product->compare_price * 100) }}% OFF
                             </span>
                         @else
@@ -63,17 +63,17 @@
                     <div class="mt-8">
                         <div class="flex items-center space-x-4">
                             <div class="flex items-center border border-gray-300 rounded-md">
-                                <button type="button" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 focus:outline-none">
+                                <button type="button" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 focus:outline-hidden">
                                     <i class="fas fa-minus"></i>
                                 </button>
                                 <input type="number" id="quantity" name="quantity" min="1" value="1" 
                                        class="w-16 text-center border-0 focus:ring-0">
-                                <button type="button" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 focus:outline-none">
+                                <button type="button" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 focus:outline-hidden">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                             <button type="button" 
-                                    class="flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    class="flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Add to cart
                             </button>
                         </div>

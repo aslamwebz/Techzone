@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - master
-      - '*.x'
+      - 'feat/**'
+      - 'chore/**'
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 permissions:
   contents: read
@@ -15,13 +14,7 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [8.2, 8.3, 8.4]
-
-    name: PHP ${{ matrix.php }}
+    name: PHP 8.4 CI
 
     steps:
       - name: Checkout code
@@ -30,15 +23,33 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath
           coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Copy environment file
+        run: cp .env.example .env
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Copy environment file
-        run: cp .env.example .env
+      - name: Run Composer Audit
+        run: composer audit
+
+      - name: Check code style with Pint
+        run: vendor/bin/pint --test
+
+      - name: Install NPM dependencies
+        run: npm ci || npm install
+
+      - name: Build assets
+        run: npm run build
 
       - name: Generate app key
         run: php artisan key:generate
