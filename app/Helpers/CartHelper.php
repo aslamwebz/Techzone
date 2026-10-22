@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Session;
 
-if (!function_exists('cartCount')) {
+if (! function_exists('cartCount')) {
     /**
      * Get the number of items in the cart
      *
@@ -11,13 +11,14 @@ if (!function_exists('cartCount')) {
     function cartCount()
     {
         $cart = Session::get('cart', []);
-        return array_reduce($cart, function($carry, $item) {
+
+        return array_reduce($cart, function ($carry, $item) {
             return $carry + $item['quantity'];
         }, 0);
     }
 }
 
-if (!function_exists('cartTotal')) {
+if (! function_exists('cartTotal')) {
     /**
      * Calculate the total price of items in the cart
      *
@@ -26,8 +27,10 @@ if (!function_exists('cartTotal')) {
     function cartTotal()
     {
         $cart = Session::get('cart', []);
-        return array_reduce($cart, function($carry, $item) {
+
+        return array_reduce($cart, function ($carry, $item) {
             $price = $item['sale_price'] ?? $item['price'];
+
             return $carry + ($price * $item['quantity']);
         }, 0);
     }

@@ -26,15 +26,13 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Gloudemans\Shoppingcart\Cart restore(string $identifier) Restore a cart
  * @method static \Gloudemans\Shoppingcart\Cart erase(string $identifier) Erase a cart
  * @method static \Gloudemans\Shoppingcart\Cart restoreLastActiveCart() Restore the last active cart
- * 
+ *
  * @see \Gloudemans\Shoppingcart\Cart
  */
 class Cart extends Facade
 {
     /**
      * Get the registered name of the component.
-     *
-     * @return string
      */
     protected static function getFacadeAccessor(): string
     {

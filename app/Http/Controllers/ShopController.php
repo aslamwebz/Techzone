@@ -2,78 +2,184 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    /**
+     * Display the home page with featured products and new arrivals.
+     */
+    /**
+     * Display the home page with featured products and new arrivals.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
-        $featuredProducts = Product::where('is_featured', true)
-                                 ->with('category')
-                                 ->take(8)
-                                 ->get();
+        // Get featured products that are active
+        $featuredProducts = Product::query()
+            ->with('category')
+            ->where('is_featured', true)
+            ->where('is_active', true)
+            ->latest('created_at')
+            ->take(8)
+            ->get();
 
-        $newArrivals = Product::latest()
-                            ->with('category')
-                            ->take(8)
-                            ->get();
+        // Get new arrivals that are active (products from the last 30 days)
+        $newArrivals = Product::query()
+            ->with('category')
+            ->where('is_active', true)
+            ->where('created_at', '>=', now()->subDays(30))
+            ->latest('created_at')
+            ->take(8)
+            ->get();
 
-        $categories = Category::withCount('products')
-                            ->orderBy('products_count', 'desc')
-                            ->take(6)
-                            ->get();
+        // If no new arrivals in the last 30 days, get the 8 most recent active products
+        if ($newArrivals->isEmpty()) {
+            $newArrivals = Product::query()
+                ->with('category')
+                ->where('is_active', true)
+                ->latest('created_at')
+                ->take(8)
+                ->get();
+        }
+
+        // Get categories with active products for the home page
+        $categories = Category::query()
+            ->whereHas('products', function ($query) {
+                $query->where('is_active', true);
+            })
+            ->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->orderByDesc('products_count')
+            ->take(6)
+            ->get();
+
+        // Log the results
+        \Log::info('Featured products count: '.$featuredProducts->count());
+        \Log::info('New arrivals count: '.$newArrivals->count());
+        \Log::info('Categories count: '.$categories->count());
 
         return view('shop.index', compact('featuredProducts', 'newArrivals', 'categories'));
     }
 
-    public function shop()
+    /**
+     * Display the specified product.
+     */
+    public function show($slug)
     {
-        $products = Product::with('category')
-                         ->paginate(12)
-                         ->withQueryString();
+        $product = Product::where('slug', $slug)
+            ->where('is_active', true)
+            ->with('category')
+            ->firstOrFail();
 
-        $categories = Category::withCount('products')
-                            ->orderBy('name')
-                            ->get();
-
-        return view('shop.shop', compact('products', 'categories'));
-    }
-
-    public function category(Category $category)
-    {
-        $products = $category->products()
-                          ->with('category')
-                          ->paginate(12)
-                          ->withQueryString();
-
-        $categories = Category::withCount('products')
-                            ->orderBy('name')
-                            ->get();
-
-        return view('shop.category', compact('products', 'categories', 'category'));
-    }
-
-    public function show(Product $product)
-    {
+        // Get related products (products from the same category)
         $relatedProducts = Product::where('category_id', $product->category_id)
-                                ->where('id', '!=', $product->id)
-                                ->inRandomOrder()
-                                ->take(4)
-                                ->get();
+            ->where('id', '!=', $product->id)
+            ->where('is_active', true)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
 
-        return view('shop.product', compact('product', 'relatedProducts'));
+        return view('shop.product', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts,
+        ]);
     }
-    
-    public function showCategory(Category $category)
-    {
-        $products = $category->products()
-                          ->with('category')
-                          ->paginate(12)
-                          ->withQueryString();
 
-        return view('shop.category', compact('category', 'products'));
+    /**
+     * Display all categories page.
+     */
+    public function categories()
+    {
+        $categories = Category::withCount(['products' => function ($query) {
+            $query->where('is_active', true);
+        }])
+            ->whereHas('products')
+            ->orderBy('name')
+            ->get();
+
+        return view('shop.categories', compact('categories'));
+    }
+
+    /**
+     * Display new arrivals page.
+     */
+    public function newArrivals()
+    {
+        $products = Product::where('is_active', true)
+            ->where('created_at', '>=', now()->subDays(30))
+            ->latest('created_at')
+            ->paginate(12);
+
+        return view('shop.new-arrivals', compact('products'));
+    }
+
+    /**
+     * Display deals/special offers page.
+     */
+    public function deals()
+    {
+        $products = Product::where('is_active', true)
+            ->where('compare_at_price', '>', 0)
+            ->whereColumn('price', '<', 'compare_at_price')
+            ->latest()
+            ->paginate(12);
+
+        return view('shop.deals', compact('products'));
+    }
+
+    /**
+     * Display about us page.
+     */
+    public function about()
+    {
+        return view('shop.about');
+    }
+
+    /**
+     * Display contact us page.
+     */
+    public function contact()
+    {
+        return view('shop.contact');
+    }
+
+    /**
+     * Handle product search
+     *
+     * @return \Illuminate\View\View
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+
+        $products = Product::query()
+            ->with('category')
+            ->where('is_active', true)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%")
+                    ->orWhere('details', 'like', "%{$query}%");
+            })
+            ->latest('created_at')
+            ->paginate(12)
+            ->withQueryString();
+
+        $categories = Category::withCount(['products' => function ($q) {
+            $q->where('is_active', true);
+        }])
+            ->orderBy('name')
+            ->get();
+
+        return view('shop.search', [
+            'products' => $products,
+            'categories' => $categories,
+            'searchQuery' => $query,
+        ]);
     }
 }
 

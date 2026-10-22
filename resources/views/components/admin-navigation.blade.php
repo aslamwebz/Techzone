@@ -28,6 +28,14 @@
                     <x-nav-link href="#" :active="request()->routeIs('users.*')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @can('view activity logs')
+                    <x-nav-link :href="route('admin.logs.dashboard')" :active="request()->routeIs('admin.logs.*')">
+                        {{ __('Activity Logs') }}
+                        <span class="ml-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                            New
+                        </span>
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -99,6 +107,14 @@
             <x-responsive-nav-link href="#" :active="request()->routeIs('users.*')">
                 {{ __('Users') }}
             </x-responsive-nav-link>
+            @can('view activity logs')
+            <x-responsive-nav-link :href="route('admin.logs.dashboard')" :active="request()->routeIs('admin.logs.*')">
+                {{ __('Activity Logs') }}
+                <span class="ml-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                    New
+                </span>
+            </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

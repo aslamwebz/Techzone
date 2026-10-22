@@ -66,7 +66,7 @@
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
+        "@@context": "https://schema.org",
         "@type": "WebSite",
         "name": "TechZone",
         "url": "{{ config('app.url') }}",
@@ -168,18 +168,7 @@
 
                     <!-- Search (Desktop) -->
                     <div class="hidden md:block relative w-64">
-                        <form action="{{ route('shop') }}" method="GET" class="relative">
-                            <input 
-                                type="text" 
-                                name="search" 
-                                placeholder="Search products..." 
-                                class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none text-sm transition-all duration-200"
-                                value="{{ request('search') }}"
-                            >
-                            <button type="submit" class="absolute right-0 top-0 h-full px-4 text-gray-500 hover:text-indigo-600 focus:outline-none">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
+                        <livewire:search-products />
                     </div>
 
                     <!-- Cart Counter -->
@@ -226,15 +215,9 @@
         <!-- Mobile menu -->
         <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white border-t border-gray-200">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <form action="{{ route('shop') }}" method="GET" class="px-2 py-3">
-                    <div class="relative">
-                        <input type="text" name="search" placeholder="Search products..." 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <button type="submit" class="absolute right-2 top-2 text-gray-400 hover:text-gray-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                <div class="px-2 py-3">
+                    <livewire:search-products />
+                </div>
                 <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-indigo-600">
                     Home
                 </a>

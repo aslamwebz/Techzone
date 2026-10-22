@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -30,26 +30,24 @@ class CheckoutController extends Controller
 
         // Get user details if logged in
         $user = Auth::user();
-        
+
         return view('checkout.index', [
             'cartItems' => $cartItems,
             'subtotal' => $subtotal,
             'tax' => $tax,
             'total' => $total,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
     /**
      * Process the checkout.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     /**
      * Process the checkout form submission.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -77,13 +75,13 @@ class CheckoutController extends Controller
             // 5. Redirect to success page
 
             // For now, we'll just clear the cart and redirect to success
-            $orderId = 'ORD-' . strtoupper(uniqid());
-            
+            $orderId = 'ORD-'.strtoupper(uniqid());
+
             // Store order details in session for the success page
             session([
                 'order_id' => $orderId,
                 'shipping_address' => [
-                    'name' => $validated['first_name'] . ' ' . $validated['last_name'],
+                    'name' => $validated['first_name'].' '.$validated['last_name'],
                     'email' => $validated['email'],
                     'phone' => $validated['phone'],
                     'address' => $validated['address'],
@@ -100,11 +98,11 @@ class CheckoutController extends Controller
 
             return redirect()->route('checkout.success')
                 ->with('success', 'Your order has been placed successfully!');
-                
+
         } catch (\Exception $e) {
             // Log the error
-            \Log::error('Checkout error: ' . $e->getMessage());
-            
+            \Log::error('Checkout error: '.$e->getMessage());
+
             // Redirect back with error
             return redirect()->back()
                 ->with('error', 'There was an error processing your order. Please try again.')
@@ -119,10 +117,10 @@ class CheckoutController extends Controller
      */
     public function success()
     {
-        if (!session('success')) {
+        if (! session('success')) {
             return redirect()->route('home');
         }
-        
+
         return view('checkout.success');
     }
 }

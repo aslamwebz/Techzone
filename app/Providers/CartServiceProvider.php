@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Gloudemans\Shoppingcart\ShoppingcartServiceProvider as BaseShoppingcartServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
 {
@@ -19,12 +18,12 @@ class CartServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('cart', function($app) {
+        $this->app->singleton('cart', function ($app) {
             $storage = $app['session'];
             $events = $app['events'];
             $instanceName = 'default';
             $session_key = config('app.key');
-            
+
             // Get the cart configuration
             $config = config('cart', [
                 'tax' => 0,
@@ -39,7 +38,7 @@ class CartServiceProvider extends ServiceProvider
                     'thousand_separator' => '',
                 ],
             ]);
-            
+
             // Create a new cart instance with our configuration
             return new \Gloudemans\Shoppingcart\Cart(
                 $storage,
@@ -57,7 +56,7 @@ class CartServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Publish configuration file if it doesn't exist
-        if (!file_exists(config_path('cart.php'))) {
+        if (! file_exists(config_path('cart.php'))) {
             $this->publishes([
                 __DIR__.'/../../vendor/hardevine/shoppingcart/config/cart.php' => config_path('cart.php'),
             ], 'config');
