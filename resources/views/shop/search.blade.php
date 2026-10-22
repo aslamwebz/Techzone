@@ -13,13 +13,13 @@
                 <div class="bg-white overflow-hidden shadow-xs rounded-lg">
                     <a href="{{ route('product.show', $product->slug) }}" class="block">
                         <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                            <img src="{{ $product->getFirstMediaUrl('products') ?: asset('images/placeholder.jpg') }}" 
+                            <img src="{{ $product->image_url }}" 
                                  alt="{{ $product->name }}" 
                                  class="w-full h-48 object-cover">
                         </div>
                         <div class="p-4">
                             <h3 class="text-lg font-medium text-gray-900">{{ $product->name }}</h3>
-                            <p class="mt-1 text-sm text-gray-600">{{ $product->category->name }}</p>
+                            <p class="mt-1 text-sm text-gray-600">{{ $product->category?->name ?? 'General' }}</p>
                             <p class="mt-2 text-lg font-semibold text-gray-900">{{ $product->formatted_price }}</p>
                         </div>
                     </a>

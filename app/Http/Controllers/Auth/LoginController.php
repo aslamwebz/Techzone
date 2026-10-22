@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use PragmaRX\Google2FALaravel\Facade as Google2FA;
 
 class LoginController extends Controller
 {
@@ -256,7 +255,7 @@ class LoginController extends Controller
         ]);
 
         // Check if 2FA is required
-        if (Google2FA::isActivated() && $user->two_factor_secret) {
+        if (config('google2fa.enabled', true) && ! empty($user->two_factor_secret)) {
             $this->guard()->logout();
             $request->session()->put('2fa:user:id', $user->id);
             $request->session()->put('2fa:auth:attempt', true);

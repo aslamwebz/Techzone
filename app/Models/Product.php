@@ -98,4 +98,14 @@ class Product extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return '$'.number_format((float) ($this->sale_price ?? $this->price), 2);
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image ? asset('storage/'.$this->image) : 'https://via.placeholder.com/300';
+    }
 }

@@ -441,4 +441,5 @@
         }
     });
 </script>
+@endpush
 @endsection
